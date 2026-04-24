@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Track Income</title>
     <link rel="stylesheet" href="../css_files/side-bar.css">
+    <link rel="stylesheet" href="../css_files/tracker.css">
 </head>
 
 <body>
@@ -20,7 +21,48 @@
 
             <div class="content">
 
-            </div>
+    <!-- Add Income -->
+    <div class="card">
+        <h2>Add Income</h2>
+
+        <form method="POST">
+
+            <!-- Amount -->
+            <label>Amount</label>
+            <input type="number" name="amount" required min="0">
+
+            <!-- Source -->
+            <label>Source</label>
+            <input type="text" name="source" required>
+
+            <!-- Payment Method -->
+            <label>Payment Method</label>
+            <select name="payment_method">
+                <option value="cash">Cash</option>
+                <option value="bank">Bank</option>
+                <option value="wallet">Wallet</option>
+            </select>
+
+            <!-- Date -->
+            <label>Date</label>
+            <input type="date" name="date" required>
+
+            <!-- Notes -->
+            <label>Notes</label>
+            <textarea name="notes"></textarea>
+
+            <!-- Recurring -->
+            <label>
+                <input type="checkbox" name="recurring">
+                Recurring Income
+            </label>
+
+            <button type="submit">Add Income</button>
+
+        </form>
+    </div>
+
+</div>
         </div>
     </div>
 
