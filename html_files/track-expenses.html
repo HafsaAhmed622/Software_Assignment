@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Track Expenses</title>
+    <link rel="stylesheet" href="../css_files/tracker.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Track Expenses</h1>
+    <!-- Add Expense -->
+    <div class="card">
+        <h2>Add Expense</h2>
+
+        <form method="post">
+
+            <!-- Amount -->
+            <label>Amount</label>
+            <input type="number" required min="0">
+
+            <!-- Category (User Input) -->
+            <label>Category</label>
+            <input type="text" placeholder="e.g. Food, Transport..." required>
+
+            <!-- Payment Method -->
+            <label>Payment Method</label>
+            <select required>
+                <option value="">Select Method</option>
+                <option>Cash</option>
+                <option>Credit Card</option>
+                <option>Wallet</option>
+            </select>
+
+            <!-- Notes -->
+            <label>Notes</label>
+            <input type="text" placeholder="Optional...">
+
+            <!-- Date -->
+            <label>Date</label>
+            <input type="date" required>
+
+            <button type="submit">Add Expense</button>
+
+        </form>
+    </div>
+
+    <!-- Expense Table -->
+    <div class="card">
+        <h2>Expense History</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Payment</th>
+                    <th>Notes</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <!-- Data later -->
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

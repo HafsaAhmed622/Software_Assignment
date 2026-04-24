@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Track Income</title>
+    <link rel="stylesheet" href="../css_files/tracker.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Track Income</h1>
+        <div class="card">
+            <h2>Add Income</h2>
+        <form method="POST">
+
+        <!-- Amount -->
+        <label>Amount:</label><br>
+        <input type="number" name="amount" required><br><br>
+
+        <!-- Source -->
+        <label>Source:</label><br>
+        <input type="text" name="source" required><br><br>
+
+        <!-- Payment Method -->
+        <label>Payment Method:</label><br>
+        <select name="payment_method">
+            <option value="cash">Cash</option>
+            <option value="bank">Bank</option>
+            <option value="wallet">Wallet</option>
+        </select><br><br>
+
+        <!-- Date -->
+        <label>Date:</label><br>
+        <input type="date" name="date" required><br><br>
+
+        <!-- Notes -->
+        <label>Notes:</label><br>
+        <textarea name="notes"></textarea><br><br>
+
+        <!-- Recurring -->
+        <label>
+            <input type="checkbox" name="recurring">
+            Recurring Income
+        </label><br><br>
+
+        <button type="submit">Add Income</button>
+
+    </form>
+</div>
+</div>
+
+</body>
+</html>
