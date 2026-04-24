@@ -12,8 +12,9 @@
 <body>
     <div class="app">
         <aside id="sidebar"></aside>
+
         <div class="main">
-            
+
             <nav class="topbar">
                 <div class="page-title">Track Income</div>
                 <div class="avatar"></div>
@@ -21,48 +22,71 @@
 
             <div class="content">
 
-    <!-- Add Income -->
-    <div class="card">
-        <h2>Add Income</h2>
+                <!-- Add Income -->
+                <div class="card">
+                    <h2>Add Income</h2>
 
-        <form method="POST">
+                    <form method="POST">
 
-            <!-- Amount -->
-            <label>Amount</label>
-            <input type="number" name="amount" required min="0">
+                        <!-- Amount -->
+                        <label>Amount</label>
+                        <input type="number" name="amount" required min="0">
 
-            <!-- Source -->
-            <label>Source</label>
-            <input type="text" name="source" required>
+                        <!-- Source -->
+                        <label>Source</label>
+                        <input type="text" name="source" required>
 
-            <!-- Payment Method -->
-            <label>Payment Method</label>
-            <select name="payment_method">
-                <option value="cash">Cash</option>
-                <option value="bank">Bank</option>
-                <option value="wallet">Wallet</option>
-            </select>
+                        <!-- Payment Method -->
+                        <label>Payment Method</label>
+                        <select name="payment_method">
+                            <option value="cash">Cash</option>
+                            <option value="bank">Bank</option>
+                            <option value="wallet">Wallet</option>
+                        </select>
 
-            <!-- Date -->
-            <label>Date</label>
-            <input type="date" name="date" required>
+                        <!-- Notes -->
+                        <label>Notes</label>
+                        <textarea name="notes"></textarea>
 
-            <!-- Notes -->
-            <label>Notes</label>
-            <textarea name="notes"></textarea>
+                        <!-- Date -->
+                        <label>Date</label>
+                        <input type="date" name="date" required>
 
-            <!-- Recurring -->
-            <label>
-                <input type="checkbox" name="recurring">
-                Recurring Income
-            </label>
+                        <!-- Recurring -->
+                        <label>
+                            <input type="checkbox" name="recurring">
+                            Recurring Income
+                        </label>
 
-            <button type="submit">Add Income</button>
+                        <button type="submit">Add Income</button>
 
-        </form>
-    </div>
+                    </form>
+                </div>
 
-</div>
+                <!-- Income History -->
+                <div class="card">
+                    <h2>Income History</h2>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Amount</th>
+                                <th>Source</th>
+                                <th>Payment</th>
+                                <th>Notes</th>
+                                <th>Date</th>
+                                <th>Recurring</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <!-- Data later -->
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
         </div>
     </div>
 
