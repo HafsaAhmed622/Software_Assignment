@@ -1,11 +1,10 @@
 
 .content {
-    padding: 2rem;
+    padding: 1rem 2rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
-
 
 .card {
     background-color: #1a1d26;
