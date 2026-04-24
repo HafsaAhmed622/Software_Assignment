@@ -89,26 +89,26 @@ aside#sidebar {
 
 .topbar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between; 
     padding: 1.5rem 2rem;
+    position: relative;
 }
 
 .page-title {
-    font-size: 24px;
+    font-size: 35px;
     font-weight: 700;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .avatar {
+    margin-left: auto; 
     width: 40px;
     height: 40px;
     background-color: #10b981;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    border: 2px solid #2d313e;
 }
 
 .content {
