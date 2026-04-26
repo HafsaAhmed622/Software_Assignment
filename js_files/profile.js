@@ -91,4 +91,23 @@ document.addEventListener("DOMContentLoaded", () => {
     userRepository.saveUser(user);
 }
     });
-});
+}
+);
+// Add this at the bottom of your profile.js
+const closeAccountBtn = document.getElementById("close-account-btn");
+
+if (closeAccountBtn) {
+    closeAccountBtn.addEventListener("click", () => {
+        console.log("Close account clicked"); // To check in F12 console
+        
+        const confirmDelete = confirm("Are you sure? This will permanently delete your Fintrack account and all budget data.");
+        
+        if (confirmDelete) {
+            // 1. Data Access: Remove the user from storage
+            localStorage.removeItem("fintrack_user");
+            
+            // 2. Redirect: Send them back to the sign-up page
+            window.location.href = "sign-up.html";
+        }
+    });
+}
