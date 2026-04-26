@@ -38,7 +38,7 @@ function loadSidebar() {
 
             <div class="sidebar-footer">
                 <a class="nav-item" href="user-profile.html">👤 Profile</a>
-                <a class="nav-item logout" href="login.html">🚪 Logout</a>
+                <a class="nav-item logout" href="login.html" id="logout-btn">🚪 Logout</a>
             </div>
         `;
     }
@@ -52,6 +52,31 @@ function loadSidebar() {
             item.classList.add("active");
         }
     });
+
+    // Handle Logout logic
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            // Optional: You could clear the whole storage or just a session key
+            // localStorage.removeItem("fintrack_user"); 
+        });
+    }
 }
 
-document.addEventListener("DOMContentLoaded", loadSidebar);
+
+function updateTopbarAvatar() {
+    const userData = JSON.parse(localStorage.getItem("fintrack_user"));
+    const navAvatar = document.querySelector(".topbar .avatar");
+
+    if (navAvatar && userData && userData.avatar) {
+        navAvatar.innerHTML = `<img src="${userData.avatar}" alt="User" 
+            style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+        navAvatar.style.backgroundColor = "transparent";
+    }
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadSidebar();
+    updateTopbarAvatar();
+});
