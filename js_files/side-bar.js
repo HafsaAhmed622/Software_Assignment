@@ -4,7 +4,7 @@ function loadSidebar() {
 
     const currentPage = window.location.pathname.split("/").pop() || "home-page.html";
 
-    // Header Logo (Always visible)
+    // 1. Generate Sidebar HTML
     let html = `
         <div class="sidebar-logo">
             <div class="logo-icon">💰</div>
@@ -12,7 +12,6 @@ function loadSidebar() {
         </div>
     `;
 
-    // CASE 1: Login or Sign-up pages (Special Sidebar)
     if (currentPage === "login.html" || currentPage === "sign-up.html") {
         html += `
             <div class="nav-section-label">Welcome</div>
@@ -22,9 +21,7 @@ function loadSidebar() {
                 : '<a class="nav-item" href="login.html">🔐 Login</a>'
             }
         `;
-    } 
-    // CASE 2: All other pages (Full Logged-In Sidebar)
-    else {
+    } else {
         html += `
             <div class="nav-section-label">Main</div>
             <a class="nav-item" href="user-dashboard.html">📊 Dashboard</a>
@@ -45,7 +42,7 @@ function loadSidebar() {
 
     sidebar.innerHTML = html;
 
-    // Apply the "Active" class to highlight the current page
+    // 2. Highlighting Active Page
     document.querySelectorAll(".nav-item").forEach(item => {
         const linkPath = item.getAttribute("href");
         if (linkPath === currentPage) {
@@ -53,29 +50,39 @@ function loadSidebar() {
         }
     });
 
-    // Handle Logout logic
+    // 3. LOGOUT LOGIC (Placed inside the function)
     const logoutBtn = document.getElementById("logout-btn");
     if (logoutBtn) {
         logoutBtn.addEventListener("click", () => {
-            // Optional: You could clear the whole storage or just a session key
-            // localStorage.removeItem("fintrack_user"); 
+            // Data Access: Clear user session
+            localStorage.removeItem("fintrack_user");
+            // The link href="login.html" will handle the redirect automatically
         });
     }
 }
 
-
+/**
+ * Update Topbar Avatar
+ */
 function updateTopbarAvatar() {
     const userData = JSON.parse(localStorage.getItem("fintrack_user"));
     const navAvatar = document.querySelector(".topbar .avatar");
 
-    if (navAvatar && userData && userData.avatar) {
-        navAvatar.innerHTML = `<img src="${userData.avatar}" alt="User" 
-            style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
-        navAvatar.style.backgroundColor = "transparent";
+    if (navAvatar) {
+        if (userData && userData.avatar) {
+            navAvatar.innerHTML = `<img src="${userData.avatar}" alt="User" 
+                style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+            navAvatar.style.backgroundColor = "transparent";
+        } else {
+            // Reset to default if logged out
+            navAvatar.innerHTML = "👤";
+            navAvatar.style.backgroundColor = "#10b981";
+            navAvatar.style.fontSize = "20px";
+        }
     }
 }
 
-
+// Run functions when page loads
 document.addEventListener("DOMContentLoaded", () => {
     loadSidebar();
     updateTopbarAvatar();
