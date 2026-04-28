@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,8 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Track Income</title>
-    <link rel="stylesheet" href="../css_files/side-bar.css">
-    <link rel="stylesheet" href="../css_files/tracker.css">
+    <link rel="stylesheet" href="{% static 'tracker.css' %}">
+    <link rel="stylesheet" href="{% static 'side-bar.css' %}">
 </head>
 
 <body>
@@ -27,6 +28,7 @@
                     <h2>Add Income</h2>
 
                     <form method="POST">
+                        {% csrf_token %}
 
                         <!-- Amount -->
                         <label>Amount</label>
@@ -79,9 +81,22 @@
                             </tr>
                         </thead>
 
-                        <tbody>
-                            <!-- Data later -->
-                        </tbody>
+<tbody>
+    {% for inc in incomes %}
+    <tr>
+        <td>{{ inc.amount }}</td>
+        <td>{{ inc.source }}</td>
+        <td>{{ inc.payment_method }}</td>
+        <td>{{ inc.notes }}</td>
+        <td>{{ inc.date }}</td>
+        <td>{{ inc.recurring|yesno:"Yes,No" }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="6" style="text-align: center;">No income recorded yet.</td>
+    </tr>
+    {% endfor %}
+</tbody>
                     </table>
 
                 </div>
@@ -94,7 +109,7 @@
         <p>© 2026 Fintrack. All rights reserved.</p>
     </footer>
 
-    <script src="../js_files/side-bar.js"></script>
+    <script src="{% static 'side-bar.js' %}"></script>
 </body>
 
 </html>
