@@ -115,7 +115,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
+import os
+
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    BASE_DIR / "transactions" / "static",
+
+    os.path.join(BASE_DIR, 'transactions', 'static'),
+    
+    os.path.join(BASE_DIR, '..', 'js_files'),
+    
+    os.path.join(BASE_DIR, '..', 'css_files'),
+
 ]

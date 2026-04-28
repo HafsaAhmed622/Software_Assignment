@@ -6,80 +6,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Track Expenses</title>
-    <link rel="stylesheet" href="../css_files/side-bar.css">
-    <link rel="stylesheet" href="{ % static ../css_files/tracker.css %}">
+    <link rel="stylesheet" href="{% static 'tracker.css' %}">
+    <link rel="stylesheet" href="{% static 'side-bar.css' %}">
 </head>
 
 <body>
     <div class="app">
         <aside id="sidebar"></aside>
+
         <div class="main">
-            
             <nav class="topbar">
                 <div class="page-title">Track Expenses</div>
                 <div class="avatar"></div>
             </nav>
 
             <div class="content">
+                <div class="card">
+                    <h2>Add Expense</h2>
+                    <form method="POST">
+                        {% csrf_token %}
 
-    <!-- Add Expense -->
-    <div class="card">
-        <h2>Add Expense</h2>
+                        <label>Amount</label>
+                        <input type="number" name="amount" required min="0">
 
-        <form>
+                        <label>Category</label>
+                        <input type="text" name="category" placeholder="e.g. Food, Transport..." required>
 
-            <!-- Amount -->
-            <label>Amount</label>
-            <input type="number" required min="0">
+                        <label>Payment Method</label>
+                        <select name="payment_method" required>
+                            <option value="">Select Method</option>
+                            <option value="cash">Cash</option>
+                            <option value="credit_card">Credit Card</option>
+                            <option value="wallet">Wallet</option>
+                        </select>
 
-            <!-- Category -->
-            <label>Category</label>
-            <input type="text" placeholder="e.g. Food, Transport..." required>
+                        <label>Notes</label>
+                        <input type="text" name="notes" placeholder="Optional...">
 
-            <!-- Payment Method -->
-            <label>Payment Method</label>
-            <select required>
-                <option value="">Select Method</option>
-                <option>Cash</option>
-                <option>Credit Card</option>
-                <option>Wallet</option>
-            </select>
+                        <label>Date</label>
+                        <input type="date" name="date" required>
 
-            <!-- Notes -->
-            <label>Notes</label>
-            <input type="text" placeholder="Optional...">
+                        <button type="submit">Add Expense</button>
+                    </form>
+                </div>
 
-            <!-- Date -->
-            <label>Date</label>
-            <input type="date" required>
-
-            <button type="submit">Add Expense</button>
-
-        </form>
-    </div>
-
-    <!-- Expense Table -->
-    <div class="card">
-        <h2>Expense History</h2>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Amount</th>
-                    <th>Category</th>
-                    <th>Payment</th>
-                    <th>Notes</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <!-- Data later -->
-            </tbody>
-        </table>
-    </div>
-
-</div>
+                <div class="card">
+                    <h2>Expense History</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Amount</th>
+                                <th>Category</th>
+                                <th>Payment</th>
+                                <th>Notes</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for expense in expenses %}
+                            <tr>
+                                <td>{{ expense.Amount }}</td>
+                                <td>{{ expense.Category }}</td>
+                                <td>{{ expense.Payment_Method }}</td>
+                                <td>{{ expense.Notes }}</td>
+                                <td>{{ expense.Date }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" style="text-align: center;">No expenses recorded yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -87,7 +87,7 @@
         <p>© 2026 Fintrack. All rights reserved.</p>
     </footer>
 
-    <script src="../js_files/side-bar.js"></script>
+    <script src="{% static 'side-bar.js' %}"></script>
 </body>
 
 </html>
