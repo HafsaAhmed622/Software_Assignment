@@ -84,12 +84,12 @@
 <tbody>
     {% for inc in incomes %}
     <tr>
-        <td>{{ inc.amount }}</td>
-        <td>{{ inc.source }}</td>
-        <td>{{ inc.payment_method }}</td>
-        <td>{{ inc.notes }}</td>
-        <td>{{ inc.date }}</td>
-        <td>{{ inc.recurring|yesno:"Yes,No" }}</td>
+        <td>{{ inc.Amount }}</td>
+        <td>{{ inc.Source }}</td>
+        <td>{{ inc.Payment_Method }}</td>
+        <td>{{ inc.Notes }}</td>
+        <td>{{ inc.Date }}</td>
+        <td>{{ inc.Recurring_income|yesno:"Yes,No" }}</td>
     </tr>
     {% empty %}
     <tr>

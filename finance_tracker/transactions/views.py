@@ -3,34 +3,30 @@ from .models import income, expenses
 
 # test the new files directory .
 def income_view(request):
-    if request.method == 'POST': #get data from the databse
-        amount = request.POST.get('amount')
-        source = request.POST.get('source')
-        payment_method = request.POST.get('payment_method')
-        notes = request.POST.get('notes')
-        date = request.POST.get('date')
-        recurring = request.POST.get('recurring') == 'on'
+    if request.method == 'POST':
         income.objects.create(
-            amount=amount,
-            source=source,
-            payment_method=payment_method,
-            notes=notes,
-            date=date,
-            recurring=recurring
+            Amount=request.POST.get('amount'),
+            Source=request.POST.get('source'),
+            Payment_Method=request.POST.get('payment_method'),
+            Notes=request.POST.get('notes'),
+            Date=request.POST.get('date'),
+            Recurring_income=request.POST.get('recurring') == 'on'
         )
         return redirect('track-income')
+    
     incomes = income.objects.all().order_by('-Date')
     return render(request, 'track-income.html', {'incomes': incomes})
 
 def expense_view(request):
     if request.method == 'POST':
         expenses.objects.create(
-            amount=request.POST.get('amount'),
-            category=request.POST.get('category'),
-            payment_method=request.POST.get('payment_method'),
-            notes=request.POST.get('notes'),
-            date=request.POST.get('date')
+            Amount=request.POST.get('amount'),
+            Category=request.POST.get('category'),
+            Payment_Method=request.POST.get('payment_method'),
+            Notes=request.POST.get('notes'),
+            Date=request.POST.get('date')
         )
         return redirect('track-expenses')
+        
     all_expenses = expenses.objects.all().order_by('-Date')
     return render(request, 'track-expenses.html', {'expenses': all_expenses})
