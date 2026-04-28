@@ -9,15 +9,19 @@ function loadSidebar() {
             <div class="logo-icon">💰</div>
             <span class="logo-text">Fintrack</span>
         </div>
+
         <div class="nav-section-label">Main</div>
         <a class="nav-item" href="/finance/dashboard/">📊 Dashboard</a>
         <a class="nav-item" href="/finance/income/">💵 Income</a>
         <a class="nav-item" href="/finance/expenses/">🧾 Expenses</a>
-        
+        <a class="nav-item" href="/finance/budget/">🏦 Budget</a>
+
         <div class="nav-section-label">Planning</div>
         <a class="nav-item" href="/finance/goals/">🎯 Goals</a>
+        <a class="nav-item" href="/finance/reports/">📈 Reports</a>
 
         <div class="sidebar-footer">
+            <a class="nav-item" href="/finance/profile/">👤 Profile</a>
             <a class="nav-item logout" href="/login/" id="logout-btn">🚪 Logout</a>
         </div>
     `;
