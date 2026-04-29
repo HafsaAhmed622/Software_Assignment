@@ -5,6 +5,20 @@ class Goal(models.Model):
     goalAmount=models.DecimalField(max_digits=10,decimal_places=2)
     currentAmount=models.DecimalField(max_digits=10,decimal_places=2,default=0)
     goalDeadline=models.DateField()
+    goalDescription=models.TextField(blank=True)
+    goalCategory=models.CharField(max_length=50, blank=True)
+    PRIORITY_CHOICES = [
+        ('low', 'Low'),
+        ('medium', 'Medium'),
+        ('high', 'High'),
+    ]
+    goalPriority=models.CharField(max_length=10, choices=PRIORITY_CHOICES, default='medium') 
+
+    @property
+    def progress_percentage(self):   
+        if self.goalAmount > 0:
+            return round((self.currentAmount / self.goalAmount) * 100, 1)
+        return 0
 
 
 # Create your models here.
