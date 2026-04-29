@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,8 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="../css_files/side-bar.css">
-    <link rel="stylesheet" href="../css_files/register.css">
+    <link rel="stylesheet" href="{% static 'side-bar.css' %}">
+    <link rel="stylesheet" href="{% static 'register.css' %}">
 </head>
 
 <body>
@@ -52,8 +53,8 @@
         <p>© 2026 Fintrack. All rights reserved.</p>
     </footer>
 
-    <script src="../js_files/side-bar.js"></script>
-    <script src="../js_files/register.js"></script>
+    <script src="{% static 'side-bar.js' %}"></script>
+    <script src="{% static 'register.js' %}"></script>
 </body>
 
 </html>

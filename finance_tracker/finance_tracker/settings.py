@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'transactions',
     'goals.apps.GoalsConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -128,5 +129,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, '..', 'css_files'),
 
     os.path.join(BASE_DIR, 'goals', 'static'),
+
+    os.path.join(BASE_DIR, 'users', 'static'),
 
 ]
