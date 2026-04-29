@@ -17,7 +17,7 @@ function loadSidebar() {
         <a class="nav-item" href="/finance/budget/">🏦 Budget</a>
 
         <div class="nav-section-label">Planning</div>
-        <a class="nav-item" href="/finance/goals/">🎯 Goals</a>
+        <a class="nav-item" href="/goals/">🎯 Goals</a>
         <a class="nav-item" href="/finance/reports/">📈 Reports</a>
 
         <div class="sidebar-footer">
