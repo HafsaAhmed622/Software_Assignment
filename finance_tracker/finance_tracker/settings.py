@@ -127,4 +127,6 @@ STATICFILES_DIRS = [
     
     os.path.join(BASE_DIR, '..', 'css_files'),
 
+    os.path.join(BASE_DIR, 'goals', 'static'),
+
 ]

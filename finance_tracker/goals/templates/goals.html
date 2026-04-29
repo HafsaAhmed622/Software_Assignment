@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,8 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Goals</title>
-    <link rel="stylesheet" href="../css_files/side-bar.css">
-    <link rel="stylesheet" href="../css_files/goals.css">
+    <link rel="stylesheet" href="{% static 'side-bar.css' %}">
+    <link rel="stylesheet" href="{% static 'goals.css' %}">
 </head>
 
 <body>
@@ -47,7 +48,6 @@
                     <button class="btn-add" onclick="addGoal()">Add Goal</button>
                 </div>
 
-                <!-- Goals List -->
                 <div class="goals-section">
                     <h2>🎯 My Goals</h2>
                     <div class="empty-state" id="emptyState">
