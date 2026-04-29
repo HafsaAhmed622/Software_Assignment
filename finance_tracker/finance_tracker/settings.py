@@ -130,4 +130,6 @@ STATICFILES_DIRS = [
 
     os.path.join(BASE_DIR, 'goals', 'static'),
 
+    os.path.join(BASE_DIR, 'users', 'static'),
+
 ]
