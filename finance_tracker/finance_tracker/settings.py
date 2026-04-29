@@ -121,11 +121,6 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-
-    os.path.join(BASE_DIR, 'transactions', 'static'),
-    os.path.join(BASE_DIR, '..', 'js_files'),
-    os.path.join(BASE_DIR, '..', 'css_files'),
-    os.path.join(BASE_DIR, 'goals', 'static'),
-    os.path.join(BASE_DIR, 'users', 'static'),
-
+    BASE_DIR / "static",
 ]
+STATIC_ROOT = BASE_DIR / "staticfiles"
