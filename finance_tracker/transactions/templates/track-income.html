@@ -46,10 +46,6 @@
                             <option value="wallet">Wallet</option>
                         </select>
 
-                        <!-- Notes -->
-                        <label>Notes</label>
-                        <textarea name="notes"></textarea>
-
                         <!-- Date -->
                         <label>Date</label>
                         <input type="date" name="date" required>
@@ -75,7 +71,6 @@
                                 <th>Amount</th>
                                 <th>Source</th>
                                 <th>Payment</th>
-                                <th>Notes</th>
                                 <th>Date</th>
                                 <th>Recurring</th>
                                 <th>Action</th>
@@ -92,7 +87,6 @@
         </td>
         <td>{{ inc.Source }}</td>
         <td>{{ inc.Payment_Method }}</td>
-        <td>{{ inc.Notes }}</td>
         <td>{{ inc.Date }}</td>
         <td>{{ inc.Recurring_income|yesno:"Yes,No" }}</td>
         <td>

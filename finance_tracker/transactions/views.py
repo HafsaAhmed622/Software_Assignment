@@ -9,7 +9,6 @@ def income_view(request):
             Amount=request.POST.get('amount'),
             Source=request.POST.get('source'),
             Payment_Method=request.POST.get('payment_method'),
-            Notes=request.POST.get('notes'),
             Date=request.POST.get('date'),
             Recurring_income=request.POST.get('recurring') == 'on'
         )
