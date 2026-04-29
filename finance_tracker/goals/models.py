@@ -14,9 +14,10 @@ class Goal(models.Model):
     goalPriority=models.CharField(max_length=10, choices=PRIORITY_CHOICES, default='medium') 
 
     @property
-    def progress_percentage(self):   
-        if self.goalAmount > 0:
-            return round((self.currentAmount / self.goalAmount) * 100, 1)
+    def progress_percentage(self):
+        if self.goalAmount and self.goalAmount > 0:
+            percent = (self.currentAmount / self.goalAmount) * 100
+            return min(percent, 100)
         return 0
 
 

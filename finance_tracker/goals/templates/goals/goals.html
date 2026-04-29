@@ -22,20 +22,20 @@
 
             <div class="content">
 
-                <form method="POST">
+                <form method="POST" id="goalForm" novalidate>
                 {% csrf_token %}
                     <div class="form-card">
                         <h2>➕ Add New Goal</h2>
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="goalName">Goal Name</label>
-                                <input type="text" name="goalName" placeholder="e.g. Emergency Fund">
+                                <input type="text" name="goalName" required placeholder="e.g. Emergency Fund">
                                 <span class="error-msg" id="nameError">Please enter a goal name</span>
                             </div>
 
                             <div class="form-group" style="grid-column: span 2;">
                                 <label for="goalDescription">Description</label>
-                                <textarea name="goalDescription" placeholder="Write a short description..." rows="3"></textarea>
+                                <textarea name="goalDescription" required placeholder="Write a short description..." rows="3"></textarea>
                             </div>
 
                             <div class="form-group">
@@ -48,13 +48,13 @@
 
                             <div class="form-group">
                                 <label for="goalCurrent">Current Amount</label>
-                                <input type="number" name="goalCurrent" placeholder="e.g. 1200" min="0">
+                                <input type="number" name="goalCurrent" required placeholder="e.g. 1200" min="0">
                                 <span class="error-msg" id="currentError">Cannot exceed target amount</span>
                             </div>
 
                             <div class="form-group">
                                 <label for="goalDeadline">Deadline</label>
-                                <input type="date" name="goalDeadline">
+                                <input type="date" name="goalDeadline" required>
                                 <span class="error-msg" id="deadlineError">Please select a deadline</span>
                             </div>
 
@@ -67,7 +67,7 @@
                                 </select>
                             </div>
                         </div>
-                        <button type="submit" class="btn-add">Add Goal</button>
+                        <button type="submit" onclick="validateAndConfirm()" class="btn-add">Add Goal</button>
                     </div>
                 </form>
 
@@ -78,19 +78,40 @@
                             <div class="goal-card">
                                 <div class="goal-header">
                                     <h3>{{ x.goalTitle }}</h3>
-                                </div>
-                                <p class="description">{{ x.goalDescription }}</p>
+                                    <span class="priority-badge {{ x.goalPriority }}">{{ x.goalPriority|title }}</span>
+                                </div>                                
+                                <p class="description">{{ x.goalDescription }}</p>                               
                                 <div class="progress-bar">
-                                    <div class="progress" style="width: 200px"></div>
-                                    <span>{{ x.progress_percentage }}%</span>
-                                </div>
+                                    <div class="progress" style="--width: {{ x.progress_percentage }}%;"></div>
+                                </div>                               
+                                <span class="progress-text">{{ x.progress_percentage|floatformat:2 }}% Complete</span>
                                 <div class="goal-footer">
-                                    <span>{{ x.currentAmount }} / {{ x.goalAmount }} {{ x.currency }}</span>
-                                    <span>Deadline: {{ x.goalDeadline }}</span>
+                                    <div class="amount-info">
+                                        <span>{{ x.currentAmount }} / {{ x.goalAmount }}</span>
+                                        <div class="quick-update-btns" style="display: inline-flex; gap: 5px; margin-left: 10px;">
+                                            <div class="quick-update-btns" style="display: inline-flex; gap: 5px; margin-left: 10px;">
+                                                <button onclick="quickUpdate('{{ x.id }}', -10)" class="btn-small" >-</button>
+                                                <button onclick="quickUpdate('{{ x.id }}', 10)" class="btn-small">+</button>
+                                                <button onclick="quickUpdate('{{ x.id }}', 100)" class="btn-small">++</button>
+                                            </div>
+                                        </div>
+                                    </div>                                   
+                                    <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                                        <span>Deadline: {{ x.goalDeadline }}</span>
+                                        {% if x.deadline_status == 'urgent' %}
+                                            <small style="color: #ed8936; font-weight: bold; font-size: 11px;">⚠️ Approaches!</small>
+                                        {% elif x.deadline_status == 'expired' %}
+                                            <small style="color: #f43f5e; font-weight: bold; font-size: 11px;">❌ Overdue</small>
+                                        {% endif %}
+                                    </div>
                                 </div>
 
-                                <a href="{% url 'delete_goal' x.id %}" class="btn-delete">Delete</a>
-
+                                <div style="margin-top: 10px;">
+                                    <a href="{% url 'delete_goal' x.id %}" class="btn-delete" 
+                                    onclick="return confirm('Are you sure you want to delete this goal?');">
+                                    Delete
+                                    </a>
+                                </div>
                             </div>
                         {% endfor %}
                     {% else %}
@@ -109,6 +130,67 @@
     </footer>
 
     <script src="{% static 'side-bar.js' %}"></script>
+    <script>
+        function quickUpdate(goalId, amount) {
+            const formData = new FormData();
+            formData.append('goal_id_quick', goalId);
+            formData.append('add_amount', amount);
+            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+            fetch("{% url 'goals' %}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    window.location.reload(); 
+                } else {
+                    alert("Error updating goal.");
+                }
+            }).catch(error => console.error('Error:', error));
+        }
+
+        function validateAndConfirm() {
+            event.preventDefault();
+
+            const form = document.getElementById('goalForm');
+            const inputs = form.querySelectorAll('input[required], textarea[required]');
+            let allFilled = true;
+
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    allFilled = false;
+                    input.style.border = "1px solid #ff4d4d"; 
+                    input.placeholder = "Please fill in this field";
+                } else {
+                    input.style.border = "1px solid #2d3748"; 
+                }
+            });
+
+            if (!allFilled) {
+                alert("Please fill in all required fields.");
+                return;
+            }
+
+            const targetInput = document.getElementById('targetAmt');
+            const currentInput = document.getElementById('currentAmt');
+                    
+            const target = parseFloat(targetInput.value);
+            const current = parseFloat(currentInput.value);
+            if (current >= target) {
+                if (confirm("You've already reached your goal! Do you still want to add it?")) {
+                    form.submit();
+                }
+            } else {
+                if (confirm("Do you want to add this goal?")) {
+                    form.submit();
+                }
+            }
+        }        
+    </script>
+    
 </body>
 
 </html>
