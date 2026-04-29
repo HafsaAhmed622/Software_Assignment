@@ -10,7 +10,6 @@ class income(models.Model):
     )
     Source = models.CharField(max_length=200)
     Payment_Method = models.CharField(max_length=100)
-    Notes = models.TextField(blank=True, null=True)
     Date = models.DateField()
     Recurring_income = models.BooleanField(default=False)
     def __str__(self):
