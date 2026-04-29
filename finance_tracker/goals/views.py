@@ -9,7 +9,6 @@ def goals_view(request):
             currentAmount=request.POST.get('goalCurrent'),
             goalDeadline=request.POST.get('goalDeadline'),
             goalDescription=request.POST.get('goalDescription'),
-            goalCategory=request.POST.get('goalCategory'),
             goalPriority=request.POST.get('goalPriority'),
         )
         return redirect('goals')
