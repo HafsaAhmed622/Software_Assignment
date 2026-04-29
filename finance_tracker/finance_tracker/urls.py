@@ -21,7 +21,7 @@ import transactions
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
-    path('finance/', include('transactions.urls'))
+    path('finance/', include('transactions.urls')),
+    path('goals/', include('goals.urls')),
 ]
 
