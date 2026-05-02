@@ -21,8 +21,8 @@ function loadSidebar() {
         <a class="nav-item" href="/finance/reports/">📈 Reports</a>
 
         <div class="sidebar-footer">
-            <a class="nav-item" href="/finance/profile/">👤 Profile</a>
-            <a class="nav-item logout" href="/login/" id="logout-btn">🚪 Logout</a>
+           <a class="nav-item" href="/users/user-profile/">👤 Profile</a>
+           <a class="nav-item logout" href="/users/login/" id="logout-btn">🚪 Logout</a>
         </div>
     `;
 

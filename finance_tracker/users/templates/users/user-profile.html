@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile | Fintrack</title>
+    <link rel="stylesheet" href="{% static 'side-bar.css' %}">
+    <link rel="stylesheet" href="{% static 'profile.css' %}">
+</head>
+
+<body>
+    <div class="app">
+        
+        <aside id="sidebar"></aside>
+
+        <div class="main">
+            <nav class="topbar">
+                <div class="page-title">User Profile</div>
+                <div class="avatar">
+                    {% if user.avatar %}
+                        <img src="{{ user.avatar.url }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                    {% else %}
+                        {{ user.username|first|upper }}
+                    {% endif %}
+                </div>
+            </nav>
+
+            <div class="content profile-grid">
+         
+                <div class="profile-header-card stat-card">
+                    <div class="avatar-group">
+                        <div class="avatar-container">
+                            <div class="avatar-large" id="profile-pic">
+                                {% if user.avatar %}
+                                    <img src="{{ user.avatar.url }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                                {% else %}
+                                    {{ user.first_name|first|upper|default:user.username|first|upper }}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="header-text">
+                            <h2 id="display-name-header">
+                                {{ user.get_full_name|default:user.username }}
+                            </h2>
+                            <p class="job-title" id="display-job-header">
+                                {{ user.job_title|default:"Fintrack Member" }}
+                            </p>
+                            <button class="btn-text-only" id="change-avatar-btn">Change Avatar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-col">
+                    <section class="stat-card">
+                        <div class="card-header">
+                            <h3>General Information</h3>
+
+                            {% if messages %}
+                                <div class="messages-container">
+                                    {% for message in messages %}
+                                        <div class="form-error-banner alert-{{ message.tags }}">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            <button form="general-info-form" type="submit" class="btn-primary-small">
+                                Save Changes
+                            </button>
+                        </div>
+
+                        <form id="general-info-form" class="info-grid" method="POST" action="{% url 'users:user-profile' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="file" id="avatar-upload" name="avatar" hidden accept="image/*">
+
+                            <div class="info-item">
+                                <label for="input-fname">First Name</label>
+                                <input type="text" id="input-fname" name="first_name" class="profile-input" value="{{ user.first_name }}">
+                            </div>
+
+                            <div class="info-item">
+                                <label for="input-lname">Last Name</label>
+                                <input type="text" id="input-lname" name="last_name" class="profile-input" value="{{ user.last_name }}">
+                            </div>
+
+                            <div class="info-item">
+                                <label for="input-job">Job Title</label>
+                                <input type="text" id="input-job" name="job_title" class="profile-input" placeholder="e.g. Software Engineer" value="{{ user.job_title|default:'' }}">
+                            </div>
+
+                            <div class="info-item">
+                                <label for="input-phone">Phone Number</label>
+                                <input type="text" id="input-phone" name="phone_number" class="profile-input" value="{{ user.phone_number|default:'' }}">
+                            </div>
+
+                            <div class="info-item">
+                                <label for="input-country">Country</label>
+                                <input type="text" id="input-country" name="country" class="profile-input" value="{{ user.country|default:'' }}">
+                            </div>
+
+                            <div class="info-item">
+                                <label for="input-city">City</label>
+                                <input type="text" id="input-city" name="city" class="profile-input" value="{{ user.city|default:'' }}">
+                            </div>
+
+                            <div class="info-item full-width">
+                                <label for="input-email">Email Address</label>
+                                <input type="email" id="input-email" name="email" class="profile-input" value="{{ user.email }}">
+                            </div>
+
+                            <div class="info-item">
+                                <label>User ID</label>
+                                <p class="static-id">FT-{{ user.date_joined|date:"Y" }}-{{ user.pk|stringformat:"02d" }}</p>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+
+                <div class="profile-col">
+                    <section class="stat-card">
+                        <div class="card-header">
+                            <h3>Account Data</h3>
+                        </div>
+
+                       <div class="form-group-static">
+    <label>Member Since</label>
+    <p class="static-id">{{ user.date_joined|date:"M d, Y" }}</p>
+</div>
+
+                        <div class="form-group-static">
+                            <label>Total Balance</label>
+                            <p class="static-id">${{ total_balance|floatformat:2 }}</p>
+                        </div>
+
+                        <div class="account-actions">
+                            <form method="POST" action="{% url 'users:logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-danger-link">Log Out</button>
+                            </form>
+                            <button class="btn-danger-link" id="close-account-btn">
+                                Close your account
+                            </button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <footer class="footer">
+                <p>© 2026 Fintrack. All rights reserved.</p>
+            </footer>
+        </div>
+    </div>
+
+    <script src="{% static 'side-bar.js' %}"></script>
+    <script src="{% static 'profile.js' %}"></script>
+</body>
+</html>
