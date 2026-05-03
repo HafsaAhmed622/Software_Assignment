@@ -7,7 +7,7 @@ def goals_view(request):
         if 'goal_id_quick' in request.POST:
             goal_id = request.POST.get('goal_id_quick')
             try:
-                goal = Goal.objects.get(id=goal_id)
+                goal = Goal.objects.get(id=goal_id, user=request.user)
                 add_val = float(request.POST.get('add_amount', 0))
                 
                 new_amount = float(goal.currentAmount or 0) + add_val
@@ -25,6 +25,7 @@ def goals_view(request):
                 current = request.POST.get('goalCurrent') or 0
                 
                 Goal.objects.create(
+                    user=request.user,
                     goalTitle=request.POST.get('goalName'),   
                     goalAmount=target,
                     currentAmount=current,
@@ -33,8 +34,8 @@ def goals_view(request):
                     goalPriority=request.POST.get('goalPriority'),
                 )
             return redirect('goals')
-    
-    goals = Goal.objects.all()
+        
+    goals = Goal.objects.filter(user=request.user)
     today = timezone.now().date()
     
     for x in goals:

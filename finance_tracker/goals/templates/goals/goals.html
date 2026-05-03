@@ -17,7 +17,13 @@
 
             <nav class="topbar">
                 <div class="page-title">Financial Goals</div>
-                <div class="avatar"></div>
+                <div class="avatar">
+                    {% if user.avatar %}
+                        <img src="{{ user.avatar.url }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                    {% else %}
+                        {{ user.username|first|upper }}
+                    {% endif %}
+                </div>
             </nav>
 
             <div class="content">
@@ -174,8 +180,8 @@
                 return;
             }
 
-            const targetInput = document.getElementById('targetAmt');
-            const currentInput = document.getElementById('currentAmt');
+            const targetInput = document.querySelector('input[name="goalTarget"]');
+            const currentInput = document.querySelector('input[name="goalCurrent"]');
                     
             const target = parseFloat(targetInput.value);
             const current = parseFloat(currentInput.value);

@@ -68,8 +68,8 @@ def profile_view(request):
         user.save()
         messages.success(request, 'Profile updated successfully!')
         return redirect('users:user-profile')
-    total_income   = income.objects.aggregate(Sum('Amount'))['Amount__sum'] or 0
-    total_expenses = expenses.objects.aggregate(Sum('Amount'))['Amount__sum'] or 0
+    total_income   = income.objects.filter(user=request.user).aggregate(Sum('Amount'))['Amount__sum'] or 0
+    total_expenses = expenses.objects.filter(user=request.user).aggregate(Sum('Amount'))['Amount__sum'] or 0
     total_balance  = total_income - total_expenses
 
     return render(request, 'users/user-profile.html', {

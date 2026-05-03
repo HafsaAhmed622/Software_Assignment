@@ -6,6 +6,7 @@ from .models import income, expenses
 def income_view(request):
     if request.method == 'POST':
         income.objects.create(
+            user=request.user,
             Amount=request.POST.get('amount'),
             Source=request.POST.get('source'),
             Payment_Method=request.POST.get('payment_method'),
@@ -14,12 +15,13 @@ def income_view(request):
         )
         return redirect('track-income')
     
-    incomes = income.objects.all().order_by('-Date')
+    incomes = income.objects.filter(user=request.user).order_by('-Date')
     return render(request, 'track-income.html', {'incomes': incomes})
 
 def expense_view(request):
     if request.method == 'POST':
         expenses.objects.create(
+            user=request.user,
             Amount=request.POST.get('amount'),
             Category=request.POST.get('category'),
             Payment_Method=request.POST.get('payment_method'),
@@ -28,7 +30,7 @@ def expense_view(request):
         )
         return redirect('track-expenses')
         
-    all_expenses = expenses.objects.all().order_by('-Date')
+    all_expenses = expenses.objects.filter(user=request.user).order_by('-Date')
     return render(request, 'track-expenses.html', {'expenses': all_expenses})
 
 

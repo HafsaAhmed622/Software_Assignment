@@ -1,8 +1,11 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 
+from django.conf import settings
+
 # income model.
 class income(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     Amount = models.DecimalField(
         max_digits=10, 
         decimal_places=2, 
@@ -17,6 +20,7 @@ class income(models.Model):
 
 # expenses model.
 class expenses(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     Amount = models.DecimalField(
         max_digits=10, 
         decimal_places=2, 
