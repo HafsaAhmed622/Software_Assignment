@@ -43,3 +43,6 @@ def delete_expense(request, pk):
     item = get_object_or_404(expenses, id=pk)
     item.delete()
     return redirect('track-expenses')
+
+def home(request):
+     return render(request, 'home-page.html')

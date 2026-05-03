@@ -138,3 +138,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'salmanour334@gmail.com'     
 EMAIL_HOST_PASSWORD = 'ntzn wasd pbwa nbxz'   
+
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
