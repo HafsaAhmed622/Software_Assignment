@@ -32,6 +32,16 @@ class expenses(models.Model):
     Date = models.DateField()
     def __str__(self):
         return f"{self.Category} - {self.Amount}"
+    
+
+class Budget(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    Category = models.CharField(max_length=100)
+    Amount_Limit = models.DecimalField(max_digits=10, decimal_places=2)
+    Month = models.DateField() # We will store the first day of the month (e.g., 2026-05-01)
+
+    def __str__(self):
+        return f"{self.Category} - {self.Month.strftime('%B %Y')}"
 
 
 

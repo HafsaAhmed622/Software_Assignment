@@ -4,12 +4,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from transactions.models import income, expenses
+from transactions.models import income, expenses, Budget  # Imported Budget from transactions
 from django.db.models import Sum
 from .models import User
+from datetime import datetime
 import dns.resolver
 import uuid
 
+# --- Helper Functions ---
 
 def is_valid_email_domain(email):
     try:
@@ -19,6 +21,7 @@ def is_valid_email_domain(email):
     except Exception:
         return False
 
+# --- Account & Auth Views ---
 
 @login_required(login_url='/users/login/')
 def delete_account_view(request):
@@ -113,6 +116,8 @@ def logout_view(request):
     return redirect('users:login')
 
 
+# --- Profile & Financial Views ---
+
 @login_required(login_url='/users/login/')
 def profile_view(request):
     user = request.user
@@ -139,3 +144,58 @@ def profile_view(request):
         'user': user,
         'total_balance': total_balance,
     })
+
+
+@login_required(login_url='/users/login/')
+def budget_view(request):
+    if request.method == 'POST':
+        category = request.POST.get('category')
+        limit = request.POST.get('limit')
+        month_raw = request.POST.get('month') 
+        
+        # Convert YYYY-MM to a Date object (first day of that month)
+        month_date = datetime.strptime(month_raw + "-01", "%Y-%m-%d").date()
+
+        Budget.objects.create(
+            user=request.user,
+            Category=category,
+            Amount_Limit=limit,
+            Month=month_date
+        )
+        messages.success(request, f'Budget for {category} created successfully!')
+        return redirect('users:budget')
+
+    # Calculate spending for each budget
+    user_budgets = Budget.objects.filter(user=request.user)
+    budget_data = []
+
+    for b in user_budgets:
+        # Sum expenses matching this specific category and month/year
+        spent = expenses.objects.filter(
+            user=request.user,
+            Category=b.Category,
+            Date__year=b.Month.year,
+            Date__month=b.Month.month
+        ).aggregate(Sum('Amount'))['Amount__sum'] or 0
+        
+        percent = (spent / b.Amount_Limit) * 100 if b.Amount_Limit > 0 else 0
+        
+        # Assign CSS classes based on spending thresholds
+        status_class = ''
+        if percent >= 90:
+            status_class = 'danger'
+        elif percent >= 70:
+            status_class = 'warn'
+
+        budget_data.append({
+            'id': b.id,
+            'category': b.Category,
+            'limit': b.Amount_Limit,
+            'spent': spent,
+            'remaining': b.Amount_Limit - spent,
+            'percent': min(percent, 100),
+            'month': b.Month.strftime('%B %Y'),
+            'class': status_class
+        })
+
+    return render(request, 'budget.html', {'budgets': budget_data})

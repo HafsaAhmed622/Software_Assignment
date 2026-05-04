@@ -1,0 +1,197 @@
+/* -- Budget Page Specific Styles -- */
+
+.form-card {
+    background-color: #1a1d26;
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid #2d313e;
+    grid-column: 1 / -1;
+    margin-bottom: 2rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 13px;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    background-color: #0f111a;
+    border: 1px solid #2d313e;
+    padding: 12px;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 14px;
+    transition: border-color 0.2s;
+    font-family: inherit;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-group select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #10b981;
+}
+
+/* -- Budget monitor grid -- */
+.budget-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+}
+
+.monitor-card {
+    background-color: #1a1d26;
+    border: 1px solid #2d313e;
+    border-radius: 14px;
+    padding: 1.5rem;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.monitor-card:hover {
+    border-color: #10b981;
+    transform: translateY(-2px);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+}
+
+.cat-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.cat-month {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-bottom: 16px;
+}
+
+.cat-value {
+    font-size: 13px;
+    color: #94a3b8;
+    white-space: nowrap;
+}
+
+.cat-value strong {
+    color: #ffffff;
+}
+
+.progress-container {
+    background-color: #0f111a;
+    border-radius: 999px;
+    height: 10px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: #10b981; /* Default Green */
+}
+
+.progress-fill.warn {
+    background-color: #f59e0b; /* Orange at 70% */
+}
+
+.progress-fill.danger {
+    background-color: #ef4444; /* Red at 90% */
+}
+
+.progress-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status-text {
+    font-size: 13px;
+    color: #94a3b8;
+    margin: 0;
+}
+
+.percent-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+/* -- Empty state -- */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 1rem;
+    color: #4b5563;
+    background: #1a1d26;
+    border-radius: 16px;
+    border: 2px dashed #2d313e;
+}
+
+.btn-primary {
+    background-color: #10b981;
+    color: #ffffff;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #059669;
+}/* Add this to your budget.css file */
+
+/* 1. Style the input field itself */
+input[type="month"] {
+    background-color: #0f111a !important; /* Dark background */
+    color: #ffffff !important;            /* White text */
+    border: 1px solid #2d313e;
+    cursor: pointer;
+}
+
+/* 2. Style the calendar icon button */
+input[type="month"]::-webkit-calendar-picker-indicator {
+    filter: invert(1); /* Turns the black icon into white */
+    cursor: pointer;
+    opacity: 0.7;
+    transition: 0.2s;
+}
+
+/* 3. Hover effect for the icon */
+input[type="month"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}

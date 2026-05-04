@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Fintrack</title>
+    <link rel="stylesheet" href="{% static 'home-page.css' %}">
+    <link rel="stylesheet" href="{% static 'side-bar.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'budget.css' %}"> <!-- Import this for progress bar colors -->
+</head>
+<body>
+    <div class="app">
+        <aside id="sidebar" class="sidebar"></aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <h2 class="page-title">Dashboard</h2>
+                <div class="user-profile">
+                    <span class="user-name">{{ full_name }}</span>
+                    <div class="avatar">{{ initials }}</div>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <!-- Summary Cards -->
+                <div class="summary-grid">
+                    <div class="summary-card income">
+                        <div class="summary-icon">💵</div>
+                        <div class="summary-info">
+                            <span class="summary-label">Total Income</span>
+                            <span class="summary-value">EGP {{ total_income }}</span>
+                        </div>
+                    </div>
+                    <div class="summary-card expenses">
+                        <div class="summary-icon">🧾</div>
+                        <div class="summary-info">
+                            <span class="summary-label">Total Expenses</span>
+                            <span class="summary-value">EGP {{ total_expenses }}</span>
+                        </div>
+                    </div>
+                    <div class="summary-card balance">
+                        <div class="summary-icon">💰</div>
+                        <div class="summary-info">
+                            <span class="summary-label">Net Balance</span>
+                            <span class="summary-value">EGP {{ net_balance }}</span>
+                        </div>
+                    </div>
+                    <div class="summary-card budget">
+                        <div class="summary-icon">🏦</div>
+                        <div class="summary-info">
+                            <span class="summary-label">Budgets Active</span>
+                            <span class="summary-value">{{ active_budgets_count }}</span>
+                            <span class="summary-sub neutral">{{ near_limit_count }} near limit</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Middle Row -->
+                <div class="mid-grid">
+                    <!-- Budget Status Card -->
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3 class="dash-card-title">Budget Status</h3>
+                            <a href="{% url 'budget' %}" class="dash-card-link">View all →</a>
+                        </div>
+                        <div class="budget-status-list">
+                            {% for b in budget_summary %}
+                            <div class="budget-status-row" style="margin-bottom: 20px;">
+                                <div class="bsr-top" style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                    <span class="bsr-name" style="font-weight: 600; color: #fff;">{{ b.category }}</span>
+                                    <span class="bsr-amounts" style="font-size: 13px; color: #94a3b8;">
+                                        EGP {{ b.spent }} / <strong>EGP {{ b.limit }}</strong>
+                                    </span>
+                                </div>
+                                <div class="progress-container" style="background: #0f111a; height: 8px; border-radius: 4px; overflow: hidden;">
+                                    <div class="progress-fill {{ b.class }}" style="width: {{ b.percent }}%; height: 100%; transition: width 0.5s;"></div>
+                                </div>
+                                <span class="bsr-remaining" style="font-size: 12px; color: #94a3b8;">
+                                    {% if b.remaining < 0 %} Over by EGP {{ b.remaining|stringformat:"d"|slice:"1:" }} {% else %} EGP {{ b.remaining }} left {% endif %}
+                                </span>
+                            </div>
+                            {% empty %}
+                            <p style="color: #4b5563; text-align: center;">No budgets for {{ month_name }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="{% static 'side-bar.js' %}"></script>
+</body>
+</html>

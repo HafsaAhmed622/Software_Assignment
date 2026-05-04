@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Track Expenses</title>
+    <title>Track Expenses | Fintrack</title>
     <link rel="stylesheet" href="{% static 'tracker.css' %}">
     <link rel="stylesheet" href="{% static 'side-bar.css' %}">
 </head>
@@ -17,83 +17,98 @@
     <div class="main">
         <nav class="topbar">
             <div class="page-title">Track Expenses</div>
-            <div class="avatar">
-                {% if user.avatar %}
-                    <img src="{{ user.avatar.url }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
-                {% else %}
-                    {{ user.username|first|upper }}
-                {% endif %}
+            <div class="user-profile">
+                <span class="user-name">{{ full_name }}</span>
+                <div class="avatar">
+                    {% if user.avatar %}
+                        <img src="{{ user.avatar.url }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                    {% else %}
+                        {{ initials }}
+                    {% endif %}
+                </div>
             </div>
         </nav>
 
         <div class="content">
-        <div class="card">
-            <h2>Add Expense</h2>
-            <form method="POST">
-                {% csrf_token %}
+            <div class="card">
+                <h2>Add Expense</h2>
+                <form method="POST">
+                    {% csrf_token %}
 
-                <label>Amount</label>
-                <input type="number" name="amount" required min="0">
+                    <label>Amount (EGP)</label>
+                    <input type="number" name="amount" required min="0" step="0.01">
 
-                <label>Category</label>
-                <input type="text" name="category" placeholder="e.g. Food, Transport..." required>
+                    <!-- EDITED: Changed text input to Select for consistency with Budget -->
+                    <label>Category</label>
+                    <select name="category" required>
+                        <option value="">-- Select a category --</option>
+                        <option value="Food & Dining">Food & Dining</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Rent">Rent</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Other">Other</option>
+                    </select>
 
-                <label>Payment Method</label>
-                <select name="payment_method" required>
-                    <option value="">Select Method</option>
-                    <option value="cash">Cash</option>
-                    <option value="credit_card">Credit Card</option>
-                    <option value="wallet">Wallet</option>
-                </select>
+                    <label>Payment Method</label>
+                    <select name="payment_method" required>
+                        <option value="">Select Method</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Credit Card">Credit Card</option>
+                        <option value="Wallet">Wallet</option>
+                    </select>
 
-                <label>Date</label>
-                <input type="date" name="date" required>
-                
-                <label>Notes</label>
-                <input type="text" name="notes" placeholder="Optional...">
+                    <label>Date</label>
+                    <input type="date" name="date" required>
+                    
+                    <label>Notes</label>
+                    <input type="text" name="notes" placeholder="Optional...">
 
-                <button type="submit">Add Expense</button>
-            </form>
-        </div>
+                    <button type="submit">Add Expense</button>
+                </form>
+            </div>
 
-        <div class="card">
-            <h2>Expense History</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Amount</th>
-                        <th>Category</th>
-                        <th>Payment</th>
-                        <th>Date</th>
-                        <th>Notes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for expense in expenses %}
-                    <tr>
-                        <td>
-                            <span style="color: #10b981; font-weight: bold;">
-                            {{expense.Amount|floatformat:2 }} EGP
-                            </span>
-                        </td>
-                        <td>{{ expense.Category }}</td>
-                        <td>{{ expense.Payment_Method }}</td>
-                        <td>{{ expense.Date }}</td>
-                        <td>
-                            <a href="{% url 'delete-expense' expense.id %}" onclick="return confirm('Are you sure?')">
-                            <span style="color: #f43f5e; cursor: pointer;">🗑️</span>
-                            </a>
-                        </td>
-                        <td>{{ expense.Notes }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5" style="text-align: center;">No expenses recorded yet.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+            <div class="card">
+                <h2>Expense History</h2>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Amount</th>
+                                <th>Category</th>
+                                <th>Payment</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for expense in expenses %}
+                            <tr>
+                                <td>
+                                    <span style="color: #f43f5e; font-weight: bold;">
+                                        -{{ expense.Amount|floatformat:2 }} EGP
+                                    </span>
+                                </td>
+                                <td><span class="badge">{{ expense.Category }}</span></td>
+                                <td>{{ expense.Payment_Method }}</td>
+                                <td>{{ expense.Date }}</td>
+                                <td>
+                                    <a href="{% url 'delete-expense' expense.id %}" onclick="return confirm('Are you sure?')">
+                                        <span style="color: #f43f5e; cursor: pointer; font-size: 1.2rem;">🗑️</span>
+                                    </a>
+                                </td>
+                                <td><small>{{ expense.Notes }}</small></td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" style="text-align: center;">No expenses recorded yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -104,5 +119,4 @@
 
 <script src="{% static 'side-bar.js' %}"></script>
 </body>
-
 </html>
