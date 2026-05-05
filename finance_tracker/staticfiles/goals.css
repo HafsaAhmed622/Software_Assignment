@@ -234,6 +234,43 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     cursor: pointer;
 }
 
-input:invalid, textarea:invalid, select:invalid {
-    border: 2px solid #f56565 !important;
+input, textarea, select {
+    border: 1px solid #2d3748;
+    transition: border 0.3s ease;
+}
+
+input:focus {
+    border: 1px solid #48bb78;
+    outline: none;
+}
+
+input::placeholder {
+    color: #a0aec0;
+    font-size: 0.9rem;
+}
+.btn-small {
+    background-color: #2d313e;
+    color: #10b981;
+    border: 1px solid #10b981;
+    border-radius: 4px;
+    padding: 2px 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-small:hover {
+    background-color: #10b981;
+    color: white;
+}
+
+.btn-minus {
+    color: #f43f5e !important;
+    border-color: #f43f5e !important;
+}
+
+.btn-minus:hover {
+    background-color: #f43f5e !important;
+    color: white !important;
 }
