@@ -1,0 +1,54 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+<link rel="stylesheet" href="{% static 'home-page.css' %}">
+    </head>
+<body>
+    <div class="app">
+        <div class="main-landing">
+            <nav class="topbar-landing">
+                <div class="logo">Expense <span class="highlight">Experts</span></div>
+              <div class="auth-nav">
+                    <a href="{% url 'users:login' %}" class="btn-primary-small hero-btn">Login</a>
+                    <a href="{% url 'users:sign-up' %}" class="btn-primary-small hero-btn">Sign up</a>
+                </div>
+            </nav>
+
+            <div class="content">
+                <section class="hero-container">
+                
+                    <h1 class="hero-title">Master Your <span class="highlight">Finances</span></h1>
+                    <p class="hero-subtitle">Track spending, set monthly budgets, and watch your savings grow with our simple personal finance tool.</p>
+                    <a href="{% url 'users:sign-up' %}" class="btn-primary-small hero-btn">Get Started for Free</a>
+                </section>
+
+                <section class="feature-grid">
+                    <div class="form-card feature-item">
+                        <div class="feature-icon">📊</div>
+                        <h3>Smart Tracking</h3>
+                        <p>Automatically categorize your daily expenses and see where your money goes.</p>
+                    </div>
+                    <div class="form-card feature-item">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Set Budgets</h3>
+                        <p>Create limits for categories like Food or Rent and get alerts before you overspend.</p>
+                    </div>
+                    <div class="form-card feature-item">
+                        <div class="feature-icon">💰</div>
+                        <h3>Savings Goals</h3>
+                        <p>Plan for big purchases by setting targets and tracking your progress over time.</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <footer class="footer-landing">
+        <p>© 2026 Expense Experts. All rights reserved.</p>
+    </footer>
+</body>
+</html>

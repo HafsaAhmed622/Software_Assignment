@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget | Fintrack</title>
+    <link rel="stylesheet" href="{% static 'home-page.css' %}">
+    <link rel="stylesheet" href="{% static 'side-bar.css' %}">
+    <link rel="stylesheet" href="{% static 'budget.css' %}">
+</head>
+<body>
+    <div class="app">
+        <aside id="sidebar" class="sidebar"></aside>
+        <main class="main-content">
+            <header class="topbar">
+                <h2 class="page-title">Budget Management</h2>
+                <div class="user-profile">
+                    <span class="user-name">{{ user.username }}</span>
+                    <div class="avatar">{{ user.username|first|upper }}</div>
+                </div>
+            </header>
+            <div class="content-body">
+                <div class="form-card">
+                    <h3 class="section-title">Create New Budget</h3>
+                    <form class="budget-form" method="POST">
+                        {% csrf_token %}
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Category</label>
+                               <select name="category" required>
+                                    <option value="Food & Dining">Food & Dining</option>
+                                    <option value="Transportation">Transportation</option>
+                                    <option value="Rent">Rent</option>
+                                    <option value="Entertainment">Entertainment</option>
+                                    <option value="Utilities">Utilities</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Monthly Limit (EGP)</label>
+                                <input type="number" name="limit" required min="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Month</label>
+                                <input type="month" name="month" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Set Budget</button>
+                    </form>
+                </div>
+
+                <h3 class="section-title">Monitor Budgets</h3>
+                <div class="budget-grid">
+                    {% for b in budgets %}
+                    <div class="monitor-card">
+                        <div class="card-header">
+                            <span class="cat-label">{{ b.category }}</span>
+                            <span class="cat-value">EGP {{ b.spent }} / <strong>EGP {{ b.limit }}</strong></span>
+                        </div>
+                        <div class="cat-month">{{ b.month }}</div>
+                        <div class="progress-container">
+                            <div class="progress-fill {{ b.class }}" style="width: {{ b.percent }}%;"></div>
+                        </div>
+                        <div class="progress-footer">
+                            <p class="status-text">
+                                {% if b.remaining < 0 %}
+                                    Over budget by EGP {{ b.remaining|safe }}
+                                {% else %}
+                                    EGP {{ b.remaining }} remaining
+                                {% endif %}
+                            </p>
+                            <span class="percent-label">{{ b.percent|floatformat:0 }}%</span>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="empty-state">
+                        <p>No budgets set yet.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="{% static 'side-bar.js' %}"></script>
+</body></body>
+</html>

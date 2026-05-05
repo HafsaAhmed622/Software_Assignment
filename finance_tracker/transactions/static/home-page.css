@@ -1,0 +1,161 @@
+/* css_files/home-page.css */
+
+body {
+    background-color: #0f111a;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+}
+.main-landing {
+    width: 100%;
+}
+
+.highlight {
+    color: #10b981;
+}
+
+/* Nav & Topbar */
+.topbar-landing {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background-color: #1a1d26;
+    border-bottom: 1px solid #2d313e;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-link {
+    color: #94a3b8;
+    text-decoration: none;
+    margin-right: 25px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Buttons */
+.btn-primary-small {
+    background-color: #10b981;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+/* Hero Section */
+.hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 100px 20px;
+    background: linear-gradient(180deg, #1a1d26 0%, #0f111a 100%);
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.hero-subtitle {
+    color: #94a3b8;
+    font-size: 1.2rem;
+    max-width: 650px;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+}
+
+.hero-btn {
+    padding: 15px 40px !important;
+    font-size: 16px !important;
+}
+
+/* Features Section */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 60px 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.form-card {
+    background-color: #1a1d26;
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid #2d313e;
+    margin-bottom: 2rem;
+}
+
+.feature-item {
+    text-align: center;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.feature-item:hover {
+    transform: translateY(-10px);
+    border: 1px solid #10b981;
+}
+
+.feature-icon {
+    font-size: 45px;
+    margin-bottom: 20px;
+}
+
+.footer-landing {
+    text-align: center;
+    padding: 40px;
+    color: #64748b;
+    font-size: 14px;
+    border-top: 1px solid #2d313e;
+}
+
+.app {
+    display: flex;
+}
+
+.main-content {
+    margin-left: 260px;
+    flex: 1;
+    min-height: 100vh;
+    padding: 0 2rem;
+    box-sizing: border-box;
+}
+.nav-links a, .login-link {
+    color: white !important; /* Or whatever color you prefer */
+    text-decoration: none;
+}
+
+.nav-links a:visited {
+    color: white !important;
+}
+
+.btn-signup, .get-started-btn {
+    color: white !important;
+    text-decoration: none;
+}
+
+/* This prevents the "visited" purple color on buttons */
+.btn-signup:visited, .get-started-btn:visited {
+    color: white !important;
+}
+/* Space out the new buttons in the top bar */
+.auth-nav .hero-btn {
+    margin-left: 10px;
+    padding: 8px 16px !important; /* Makes them a bit smaller for the top bar */
+    font-size: 14px !important;
+    color: white !important;
+    text-decoration: none;
+}
+
+/* Ensure they don't turn purple after clicking */
+.auth-nav .hero-btn:visited {
+    color: white !important;
+}
