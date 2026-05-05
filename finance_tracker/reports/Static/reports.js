@@ -68,7 +68,8 @@ new Chart(document.getElementById('barChart'), {
     },
     options: {
         responsive: true,
-        scales
+        maintainAspectRatio: false, // This makes the chart fill the container
+        scales: scales
     }
 });
 
