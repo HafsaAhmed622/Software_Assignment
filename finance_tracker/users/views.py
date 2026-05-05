@@ -6,7 +6,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from transactions.models import income, expenses, Budget  # Imported Budget from transactions
 from django.db.models import Sum
-from .models import User
+from .models import User, EmailVerificationToken
 from datetime import datetime
 import dns.resolver
 import uuid
@@ -72,12 +72,8 @@ def register_view(request):
         user.is_active = False
         user.save()
 
-        # generate token and store in session
-        token = str(uuid.uuid4())
-        request.session['verification_token'] = token
-        request.session['verification_user_id'] = user.id
-
-        verification_link = f"http://127.0.0.1:8000/users/verify/{token}/"
+        token_obj = EmailVerificationToken.objects.create(user=user)
+        verification_link = f"http://127.0.0.1:8000/users/verify/{token_obj.token}/"
 
         send_mail(
             subject='Verify your Fintrack account',
@@ -93,22 +89,26 @@ def register_view(request):
 
 
 def verify_email_view(request, token):
-    session_token = request.session.get('verification_token')
-    user_id       = request.session.get('verification_user_id')
+    try:
+        token_obj = EmailVerificationToken.objects.get(token=token)
 
-    if token == session_token and user_id:
-        try:
-            user = User.objects.get(id=user_id)
-            user.is_active = True
-            user.save()
-            login(request, user)
-            messages.success(request, 'Email verified! Welcome to Fintrack!')
-            return redirect('users:user-profile')
-        except User.DoesNotExist:
-            pass
+        if token_obj.is_expired():
+            token_obj.delete()
+            messages.error(request, 'Verification link has expired. Please sign up again.')
+            return redirect('users:sign-up')
 
-    messages.error(request, 'Invalid or expired verification link.')
-    return redirect('users:sign-up')
+        user = token_obj.user
+        user.is_active = True
+        user.save()
+        token_obj.delete()
+
+        login(request, user)
+        messages.success(request, 'Email verified! Welcome to Fintrack!')
+        return redirect('users:user-profile')
+
+    except EmailVerificationToken.DoesNotExist:
+        messages.error(request, 'Invalid or expired verification link.')
+        return redirect('users:sign-up')
 
 
 def logout_view(request):

@@ -5,12 +5,13 @@ function loadSidebar() {
     const currentPath = window.location.pathname;
 
     let html = `
-        <div class="sidebar-logo">
+        <a href="/dashboard/" class="sidebar-logo">
             <div class="logo-icon">💰</div>
             <span class="logo-text">Fintrack</span>
-        </div>
+        </a>
 
         <div class="nav-section-label">Main</div>
+
         <a class="nav-item" href="/dashboard/">📊 Dashboard</a>
         <a class="nav-item" href="/income/">💵 Income</a>
         <a class="nav-item" href="/expenses/">🧾 Expenses</a>

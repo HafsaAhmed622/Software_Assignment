@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.conf import settings  
+import uuid   
 
 
 class User(AbstractUser):
@@ -11,3 +13,12 @@ class User(AbstractUser):
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
     def __str__(self):
         return self.username
+    
+class EmailVerificationToken(models.Model):
+    user       = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    token      = models.UUIDField(default=uuid.uuid4)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def is_expired(self):
+        from django.utils import timezone
+        return (timezone.now() - self.created_at).total_seconds() > 86400 

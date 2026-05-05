@@ -1,8 +1,5 @@
-
-
 document.addEventListener("DOMContentLoaded", () => {
 
-  
     const signupForm = document.getElementById("signup-form");
 
     if (signupForm) {
@@ -10,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const password        = document.getElementById("password1").value;
             const confirmPassword = document.getElementById("password2").value;
 
-       
             if (password !== confirmPassword) {
                 e.preventDefault();
                 showInlineError("password2", "Passwords do not match. Please try again.");
@@ -44,5 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
         input.insertAdjacentElement("afterend", errorSpan);
         input.focus();
     }
-
 });
+function togglePassword(fieldId) {
+    const input = document.getElementById(fieldId);
+    input.type = input.type === 'password' ? 'text' : 'password';
+}
+

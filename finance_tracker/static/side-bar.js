@@ -5,19 +5,16 @@ function loadSidebar() {
     const currentPath = window.location.pathname;
 
     let html = `
-        <div class="sidebar-logo">
+        <a href="/dashboard/" class="sidebar-logo">
             <div class="logo-icon">💰</div>
             <span class="logo-text">Fintrack</span>
-        </div>
+        </a>
 
         <div class="nav-section-label">Main</div>
-        <!-- Matches path('dashboard/', ...) -->
+
         <a class="nav-item" href="/dashboard/">📊 Dashboard</a>
-        <!-- Matches path('/income/', ...) -->
         <a class="nav-item" href="/income/">💵 Income</a>
-        <!-- Matches path('expenses/', ...) -->
         <a class="nav-item" href="/expenses/">🧾 Expenses</a>
-        <!-- Ensure you have a budget path in urls.py -->
         <a class="nav-item" href="/budget/">🏦 Budget</a>
 
         <div class="nav-section-label">Planning</div>
@@ -25,8 +22,8 @@ function loadSidebar() {
         <a class="nav-item" href="/reports/">📈 Reports</a>
 
         <div class="sidebar-footer">
-           <a class="nav-item" href="/users/user-profile/">👤 Profile</a>
-           <a class="nav-item logout" href="/login/" id="logout-btn">🚪 Logout</a>
+            <a class="nav-item" href="/users/user-profile/">👤 Profile</a>
+            <a class="nav-item logout" href="/login/" id="logout-btn">🚪 Logout</a>
         </div>
     `;
 

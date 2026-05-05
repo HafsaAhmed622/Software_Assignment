@@ -1,0 +1,300 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Reports & Insights</title>
+    <link rel="stylesheet" href="{% static 'side-bar.css' %}">
+    <link rel="stylesheet" href="{% static 'reports.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="app">
+        <aside id="sidebar"></aside>
+        <div class="main">
+
+            <nav class="topbar">
+                <div class="page-title">View Reports & Insights</div>
+                <div class="avatar">
+                    {% if user.avatar %}
+                        <img src="{{ user.avatar.url }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                    {% else %}
+                        {{ user.username|first|upper }}
+                    {% endif %}
+                </div>
+            </nav>
+
+            <div class="content" style="display:block; padding: 0 2rem 2rem;">
+
+                <div class="filter-bar">
+                    <div class="filter-pills">
+                        <a href="?period=monthly"   class="pill {% if period == 'monthly' %}active{% endif %}">Monthly</a>
+                        <a href="?period=quarterly" class="pill {% if period == 'quarterly' %}active{% endif %}">Quarterly</a>
+                        <a href="?period=yearly"    class="pill {% if period == 'yearly' %}active{% endif %}">Yearly</a>
+                    </div>
+
+                    <form method="GET" action="{% url 'reports' %}" class="date-range-form">
+                        <input type="hidden" name="period" value="{{ period }}">
+                        <label class="range-label">From</label>
+                        <input type="date" name="from" class="date-input" value="{{ custom_from }}">
+                        <label class="range-label">To</label>
+                        <input type="date" name="to"   class="date-input" value="{{ custom_to }}">
+                        <button type="submit" class="btn-apply">Apply</button>
+                    </form>
+                </div>
+
+                <div class="reports-cards">
+                    <div class="r-card green">
+                        <div class="r-card-icon">💵</div>
+                        <div class="r-card-body">
+                            <span class="r-card-label">Total Income</span>
+                            <span class="r-card-value">${{ total_income|floatformat:2 }}</span>
+                            <span class="r-card-sub">Selected period</span>
+                        </div>
+                    </div>
+                    <div class="r-card red">
+                        <div class="r-card-icon">💸</div>
+                        <div class="r-card-body">
+                            <span class="r-card-label">Total Expenses</span>
+                            <span class="r-card-value">${{ total_expenses|floatformat:2 }}</span>
+                            <span class="r-card-sub">Selected period</span>
+                        </div>
+                    </div>
+                    <div class="r-card blue">
+                        <div class="r-card-icon">🏦</div>
+                        <div class="r-card-body">
+                            <span class="r-card-label">Net Savings</span>
+                            <span class="r-card-value">${{ net_savings|floatformat:2 }}</span>
+                            <span class="r-card-sub">Income − Expenses</span>
+                        </div>
+                    </div>
+                    <div class="r-card yellow">
+                        <div class="r-card-icon">🔥</div>
+                        <div class="r-card-body">
+                            <span class="r-card-label">Top Spending</span>
+                            <span class="r-card-value small">{{ top_category }}</span>
+                            <span class="r-card-sub">Highest category</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-card full-width">
+                    <div class="chart-title">Income vs Expenses</div>
+                    <div class="chart-sub">Last 6 months comparison</div>
+                    <div class="chart-wrap tall">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="charts-two-col">
+                    <div class="chart-card">
+                        <div class="chart-title">Savings Trend</div>
+                        <div class="chart-sub">Monthly net savings over time</div>
+                        <div class="chart-wrap">
+                            <canvas id="lineChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-title">Expenses by Category</div>
+                        <div class="chart-sub">Where your money goes</div>
+                        <div class="chart-wrap">
+                            <canvas id="pieChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-two-col">
+                    <div class="chart-card">
+                        <div class="chart-title">Income by Source</div>
+                        <div class="chart-sub">Breakdown by source</div>
+                        <div class="chart-wrap">
+                            <canvas id="donutChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-title">Budget Performance</div>
+                        <div class="chart-sub">Current month — category tracking</div>
+
+                        {% if budget_performance %}
+                        <table class="budget-table">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Limit</th>
+                                    <th>Spent</th>
+                                    <th>Remaining</th>
+                                    <th>Progress</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for b in budget_performance %}
+                                <tr>
+                                    <td class="cat-name">{{ b.category }}</td>
+                                    <td>${{ b.limit }}</td>
+                                    <td>${{ b.spent }}</td>
+                                    <td>${{ b.remaining }}</td>
+                                    <td>
+                                        <div class="prog-wrap">
+                                            <div class="prog-bar {{ b.class }}" style="--width: {{ b.percent }}%;"></div>
+                                        </div>
+                                        <span class="prog-pct">{{ b.percent }}%</span>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge {{ b.class }}">
+                                            {% if b.class == 'safe' %}✅
+                                            {% elif b.class == 'warn' %}⚠️
+                                            {% else %}🚨{% endif %}
+                                            {{ b.status }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <div class="empty-state">
+                            <p>No budgets set for this month.</p>
+                            <a href="/budget/" class="link-green">Set a budget →</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- ── EXPORT ── -->
+                <div class="export-bar">
+                    <a href="?period={{ period }}&from={{ custom_from }}&to={{ custom_to }}&export=csv"
+                        class="btn-export">⬇️ Export as CSV</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2026 Fintrack. All rights reserved.</p>
+    </footer>
+
+    <script src="{% static 'side-bar.js' %}"></script>
+    <script>
+        const GRID   = 'rgba(255,255,255,0.05)';
+        const MUTED  = '#94a3b8';
+        const GREEN  = '#10b981';
+        const RED    = '#f43f5e';
+        const BLUE   = '#3b82f6';
+        const YELLOW = '#f59e0b';
+        const PURPLE = '#8b5cf6';
+        const ORANGE = '#f97316';
+
+        Chart.defaults.color = MUTED;
+        Chart.defaults.font.family = "'Segoe UI', sans-serif";
+
+        const scales = {
+            x: { grid: { color: GRID }, ticks: { color: MUTED } },
+            y: { grid: { color: GRID }, ticks: { color: MUTED } }
+        };
+
+        new Chart(document.getElementById('barChart'), {
+            type: 'bar',
+            data: {
+                labels: {{ bar_labels|safe }},
+                datasets: [
+                    {
+                        label: 'Income',
+                        data: {{ bar_income|safe }},
+                        backgroundColor: 'rgba(16,185,129,0.75)',
+                        borderRadius: 6,
+                    },
+                    {
+                        label: 'Expenses',
+                        data: {{ bar_expenses|safe }},
+                        backgroundColor: 'rgba(244,63,94,0.75)',
+                        borderRadius: 6,
+                    }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { labels: { color: MUTED } } },
+                scales
+            }
+        });
+
+        // ── Line Chart ──
+        new Chart(document.getElementById('lineChart'), {
+            type: 'line',
+            data: {
+                labels: {{ bar_labels|safe }},
+                datasets: [{
+                    label: 'Net Savings',
+                    data: {{ line_savings|safe }},
+                    borderColor: BLUE,
+                    backgroundColor: 'rgba(59,130,246,0.1)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: BLUE,
+                    pointRadius: 4,
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { labels: { color: MUTED } } },
+                scales
+            }
+        });
+
+        // ── Pie Chart ──
+        new Chart(document.getElementById('pieChart'), {
+            type: 'pie',
+            data: {
+                labels: {{ pie_labels|safe }},
+                datasets: [{
+                    data: {{ pie_data|safe }},
+                    backgroundColor: [GREEN, RED, BLUE, YELLOW, PURPLE, ORANGE, '#ec4899', '#14b8a6'],
+                    borderColor: '#1a1d26',
+                    borderWidth: 2,
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { color: MUTED, padding: 12, font: { size: 11 } }
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('donutChart'), {
+            type: 'doughnut',
+            data: {
+                labels: {{ donut_labels|safe }},
+                datasets: [{
+                    data: {{ donut_data|safe }},
+                    backgroundColor: [GREEN, BLUE, YELLOW, PURPLE, ORANGE],
+                    borderColor: '#1a1d26',
+                    borderWidth: 2,
+                    hoverOffset: 8,
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                cutout: '65%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: MUTED, padding: 10, font: { size: 11 } }
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

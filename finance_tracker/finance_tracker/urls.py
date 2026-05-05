@@ -17,6 +17,7 @@ urlpatterns = [
     
     path('goals/', include('goals.urls')),
     path('users/', include('users.urls')),
+    path('reports/', include('reports.urls')),
 
 ] 
 
