@@ -11,18 +11,18 @@ function loadSidebar() {
         </div>
 
         <div class="nav-section-label">Main</div>
-        <a class="nav-item" href="/finance/dashboard/">📊 Dashboard</a>
-        <a class="nav-item" href="/finance/income/">💵 Income</a>
-        <a class="nav-item" href="/finance/expenses/">🧾 Expenses</a>
-        <a class="nav-item" href="/finance/budget/">🏦 Budget</a>
+        <a class="nav-item" href="/dashboard/">📊 Dashboard</a>
+        <a class="nav-item" href="/income/">💵 Income</a>
+        <a class="nav-item" href="/expenses/">🧾 Expenses</a>
+        <a class="nav-item" href="/budget/">🏦 Budget</a>
 
         <div class="nav-section-label">Planning</div>
         <a class="nav-item" href="/goals/">🎯 Goals</a>
-        <a class="nav-item" href="/finance/reports/">📈 Reports</a>
+        <a class="nav-item" href="/reports/">📈 Reports</a>
 
         <div class="sidebar-footer">
-           <a class="nav-item" href="/users/user-profile/">👤 Profile</a>
-           <a class="nav-item logout" href="/users/login/" id="logout-btn">🚪 Logout</a>
+            <a class="nav-item" href="/users/user-profile/">👤 Profile</a>
+            <a class="nav-item logout" href="/login/" id="logout-btn">🚪 Logout</a>
         </div>
     `;
 
