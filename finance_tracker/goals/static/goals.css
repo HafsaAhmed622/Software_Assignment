@@ -1,4 +1,8 @@
 
+.content {
+    display: block !important;
+}
+
 .content h2 {
     font-size: 22px;
     font-weight: 700;
