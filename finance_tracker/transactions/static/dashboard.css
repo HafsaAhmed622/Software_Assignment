@@ -22,21 +22,14 @@
     transform: translateY(-2px);
 }
 
-.summary-card.income  { border-left: 3px solid #10b981; }
+.summary-card.income   { border-left: 3px solid #10b981; }
 .summary-card.expenses { border-left: 3px solid #ef4444; }
 .summary-card.balance  { border-left: 3px solid #3b82f6; }
 .summary-card.budget   { border-left: 3px solid #f59e0b; }
 
-.summary-icon {
-    font-size: 2rem;
-    flex-shrink: 0;
-}
+.summary-icon { font-size: 2rem; flex-shrink: 0; }
 
-.summary-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
+.summary-info { display: flex; flex-direction: column; gap: 2px; }
 
 .summary-label {
     font-size: 12px;
@@ -52,13 +45,22 @@
     line-height: 1.2;
 }
 
-.summary-sub {
-    font-size: 12px;
-}
-
+.summary-sub { font-size: 12px; }
 .summary-sub.positive { color: #10b981; }
 .summary-sub.negative { color: #ef4444; }
 .summary-sub.neutral  { color: #f59e0b; }
+
+/* ── Welcome Message ── */
+.welcome-msg {
+    background: rgba(16,185,129,0.15);
+    border: 1px solid #10b981;
+    color: #10b981;
+    padding: 12px 20px;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
 
 /* ── Shared card shell ── */
 .dash-card {
@@ -82,11 +84,6 @@
     margin: 0;
 }
 
-.dash-card-sub {
-    font-size: 12px;
-    color: #4b5563;
-}
-
 .dash-card-link {
     font-size: 13px;
     color: #10b981;
@@ -94,9 +91,7 @@
     transition: opacity 0.2s;
 }
 
-.dash-card-link:hover {
-    opacity: 0.75;
-}
+.dash-card-link:hover { opacity: 0.75; }
 
 /* ── Middle row ── */
 .mid-grid {
@@ -106,77 +101,10 @@
     margin-bottom: 1.5rem;
 }
 
-@media (max-width: 900px) {
-    .mid-grid { grid-template-columns: 1fr; }
-}
+@media (max-width: 900px) { .mid-grid { grid-template-columns: 1fr; } }
 
-/* ── Spending by category ── */
-.category-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.category-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.cat-icon {
-    font-size: 1.4rem;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #0f111a;
-    border-radius: 8px;
-    flex-shrink: 0;
-}
-
-.cat-details {
-    flex: 1;
-}
-
-.cat-name-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-}
-
-.cat-name {
-    font-size: 13px;
-    color: #cbd5e1;
-}
-
-.cat-amount {
-    font-size: 13px;
-    font-weight: 600;
-    color: #ffffff;
-}
-
-.mini-bar-track {
-    background-color: #0f111a;
-    border-radius: 999px;
-    height: 6px;
-    overflow: hidden;
-}
-
-.mini-bar-fill {
-    height: 100%;
-    border-radius: 999px;
-    transition: width 0.4s ease;
-}
-
-/* ── Budget status ── */
-.budget-status-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.1rem;
-}
-
-.budget-status-row {}
+/* ── Budget Status ── */
+.budget-status-list { display: flex; flex-direction: column; gap: 1.1rem; }
 
 .bsr-top {
     display: flex;
@@ -184,19 +112,9 @@
     margin-bottom: 5px;
 }
 
-.bsr-name {
-    font-size: 13px;
-    color: #cbd5e1;
-}
-
-.bsr-amounts {
-    font-size: 13px;
-    color: #94a3b8;
-}
-
-.bsr-amounts strong {
-    color: #ffffff;
-}
+.bsr-name { font-size: 13px; font-weight: 600; color: #fff; }
+.bsr-amounts { font-size: 13px; color: #94a3b8; }
+.bsr-amounts strong { color: #ffffff; }
 
 .progress-container {
     background-color: #0f111a;
@@ -216,48 +134,23 @@
 .progress-fill.warn   { background-color: #f59e0b; }
 .progress-fill.danger { background-color: #ef4444; }
 
-.bsr-remaining {
-    font-size: 12px;
-    color: #4b5563;
-}
-
-.bsr-remaining.warning {
-    color: #f59e0b;
-}
-
-/* ── Bottom row ── */
-.bottom-grid {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 1.25rem;
-}
-
-@media (max-width: 900px) {
-    .bottom-grid { grid-template-columns: 1fr; }
-}
+.bsr-remaining { font-size: 12px; color: #4b5563; }
 
 /* ── Recent Transactions ── */
-.transaction-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-}
+.recent-list { display: flex; flex-direction: column; gap: 10px; }
 
-.transaction-row {
+.recent-row {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px solid #1e2130;
+    padding: 10px;
+    border-radius: 10px;
+    background: #0f111a;
 }
 
-.transaction-row:last-child {
-    border-bottom: none;
-}
-
-.tx-icon {
-    width: 36px;
-    height: 36px;
+.recent-icon {
+    width: 38px;
+    height: 38px;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -266,105 +159,34 @@
     flex-shrink: 0;
 }
 
-.tx-icon.expense-icon { background-color: #2d1f1f; }
-.tx-icon.income-icon  { background-color: #1a2e25; }
+.icon-income  { background: rgba(16,185,129,0.15); }
+.icon-expense { background: rgba(244,63,94,0.15); }
 
-.tx-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
+.recent-info { display: flex; flex-direction: column; flex: 1; }
+.recent-name { font-size: 0.88rem; font-weight: 600; color: #fff; }
+.recent-date { font-size: 0.75rem; color: #64748b; }
 
-.tx-name {
-    font-size: 14px;
-    color: #ffffff;
-    font-weight: 500;
-}
+.recent-amount { font-size: 0.9rem; font-weight: 700; }
+.amount-in  { color: #10b981; }
+.amount-out { color: #f43f5e; }
 
-.tx-date {
-    font-size: 12px;
-    color: #4b5563;
-}
-
-.tx-amount {
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.tx-amount.positive { color: #10b981; }
-.tx-amount.negative { color: #ef4444; }
-
-/* ── Goals ── */
-.goals-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.1rem;
-}
-
-.goal-row {}
-
-.goal-header-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 7px;
-}
-
-.goal-emoji {
-    font-size: 1.3rem;
-    width: 34px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #0f111a;
-    border-radius: 8px;
-    flex-shrink: 0;
-}
-
-.goal-meta {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-}
-
-.goal-name {
-    font-size: 13px;
-    color: #ffffff;
-    font-weight: 500;
-}
-
-.goal-amounts {
-    font-size: 12px;
-    color: #4b5563;
-}
-
-.goal-percent {
-    font-size: 13px;
-    font-weight: 600;
-    color: #10b981;
-}
-
+/* ── Date Input ── */
 input[type="date"] {
-    background-color: #2c2c2c; 
-    color: #ffffff;            
-    border: 1px solid #444;  
+    background-color: #2c2c2c;
+    color: #ffffff;
+    border: 1px solid #444;
     padding: 8px;
     border-radius: 5px;
     cursor: pointer;
 }
 
-/* Change the color of the Calendar Icon (Chrome/Edge/Safari) */
 input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: invert(1); /* This turns the black icon white */
+    filter: invert(1);
     cursor: pointer;
     padding: 5px;
     border-radius: 3px;
 }
 
-/* Hover effect for the icon */
 input[type="date"]::-webkit-calendar-picker-indicator:hover {
-    background-color: #00d1b2; /* Matches your "Fintrack" green theme */
+    background-color: #10b981;
 }

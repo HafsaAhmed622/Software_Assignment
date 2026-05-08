@@ -245,8 +245,10 @@
     overflow: hidden;
     margin-bottom: 3px;
 }
+
 .prog-bar {
     height: 100%;
+    width: var(--width);
     border-radius: 99px;
     transition: width 0.5s ease;
 }

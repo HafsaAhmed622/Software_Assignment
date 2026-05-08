@@ -30,6 +30,7 @@ aside#sidebar {
     display: flex;
     align-items: center;
     gap: 12px;
+    padding: 2rem 1.5rem .9rem 1.5rem ;
     text-decoration: none;
     color: inherit;
 }
@@ -37,7 +38,7 @@ aside#sidebar {
 .logo-icon {
     width: 32px;
     height: 32px;
-    background-color: #10b981;
+    background-color: #10b981; /* Teal green */
     border-radius: 8px;
     display: flex;
     align-items: center;

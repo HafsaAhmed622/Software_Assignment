@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from transactions.models import income, expenses, Budget
-import json
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -115,14 +114,14 @@ def reports_view(request):
         'period': period,
         'custom_from': custom_from or '',
         'custom_to': custom_to or '',
-        'pie_labels': json.dumps(pie_labels),
-        'pie_data': json.dumps(pie_data),
-        'donut_labels': json.dumps(donut_labels),
-        'donut_data': json.dumps(donut_data),
-        'bar_labels': json.dumps(bar_labels),
-        'bar_income': json.dumps(bar_income),
-        'bar_expenses': json.dumps(bar_expenses),
-        'line_savings': json.dumps(line_savings),
+        'pie_labels': pie_labels,
+        'pie_data': pie_data,
+        'donut_labels': donut_labels,
+        'donut_data': donut_data,
+        'bar_labels': bar_labels,
+        'bar_income': bar_income,
+        'bar_expenses': bar_expenses,
+        'line_savings': line_savings,
         'budget_performance': budget_performance,
     }
 

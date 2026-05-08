@@ -1,38 +1,27 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.db.models import Sum
-from datetime import datetime
-from .models import income, expenses ,Budget
+from django.db.models import Sum, Value, CharField
+from itertools import chain
+import datetime
+from .models import income, expenses, Budget
 
 @login_required
 def dashboard_view(request):
-    """Calculates summary data for the user dashboard including Budget status."""
-    
-    # Calculate Total Income
-    total_income_data = income.objects.filter(user=request.user).aggregate(Sum('Amount'))
-    total_income = total_income_data['Amount__sum'] or 0
-    
-    # Calculate Total Expenses
-    total_expenses_data = expenses.objects.filter(user=request.user).aggregate(Sum('Amount'))
-    total_expenses = total_expenses_data['Amount__sum'] or 0
-    
-    # Calculate Net Balance
-    net_balance = total_income - total_expenses
-    
-    # --- NEW BUDGET LOGIC FOR DASHBOARD ---
-    import datetime
     today = datetime.date.today()
-    
-    # Get budgets for the CURRENT month
+
+    total_income = income.objects.filter(user=request.user).aggregate(Sum('Amount'))['Amount__sum'] or 0
+    total_expenses = expenses.objects.filter(user=request.user).aggregate(Sum('Amount'))['Amount__sum'] or 0
+    net_balance = total_income - total_expenses
+
     current_budgets = Budget.objects.filter(
-        user=request.user, 
-        Month__year=today.year, 
+        user=request.user,
+        Month__year=today.year,
         Month__month=today.month
     )
-    
+
     budget_summary = []
     near_limit_count = 0
-    
+
     for b in current_budgets:
         spent = expenses.objects.filter(
             user=request.user,
@@ -40,10 +29,11 @@ def dashboard_view(request):
             Date__year=today.year,
             Date__month=today.month
         ).aggregate(Sum('Amount'))['Amount__sum'] or 0
-        
+
         percent = (spent / b.Amount_Limit) * 100 if b.Amount_Limit > 0 else 0
-        if percent >= 80: near_limit_count += 1
-        
+        if percent >= 80:
+            near_limit_count += 1
+
         budget_summary.append({
             'category': b.Category,
             'spent': spent,
@@ -53,55 +43,53 @@ def dashboard_view(request):
             'class': 'danger' if percent >= 90 else ('warn' if percent >= 70 else '')
         })
 
-    # Get user initials
-    user_initials = request.user.username[:2].upper()
-    
+    # Recent Transactions
+    recent_income = income.objects.filter(user=request.user).order_by('-Date')[:10].values('Amount', 'Source', 'Date')
+    recent_expenses = expenses.objects.filter(user=request.user).order_by('-Date')[:10].values('Amount', 'Category', 'Date')
+
+    income_list = [{'Amount': t['Amount'], 'label': t['Source'], 'Date': t['Date'], 'type': 'income'} for t in recent_income]
+    expense_list = [{'Amount': t['Amount'], 'label': t['Category'], 'Date': t['Date'], 'type': 'expense'} for t in recent_expenses]
+
+    recent_transactions = sorted(chain(income_list, expense_list), key=lambda x: x['Date'], reverse=True)[:5]
+
     context = {
         'total_income': total_income,
         'total_expenses': total_expenses,
         'net_balance': net_balance,
         'full_name': request.user.get_full_name() or request.user.username,
-        'initials': user_initials,
+        'initials': request.user.username[:2].upper(),
         'budget_summary': budget_summary,
         'active_budgets_count': current_budgets.count(),
         'near_limit_count': near_limit_count,
+        'recent_transactions': recent_transactions,
     }
-    
+
     return render(request, 'user-dashboard.html', context)
+
+
 @login_required
 def budget_view(request):
     if request.method == 'POST':
-        # Get data from the form
         category = request.POST.get('category')
         limit = request.POST.get('limit')
-        month_raw = request.POST.get('month') # Format: YYYY-MM
-        
-        # Convert YYYY-MM to a full date (first of the month)
-        month_date = datetime.strptime(month_raw + "-01", "%Y-%m-%d").date()
-
-        Budget.objects.create(
-            user=request.user,
-            Category=category,
-            Amount_Limit=limit,
-            Month=month_date
-        )
+        month_raw = request.POST.get('month')
+        month_date = datetime.datetime.strptime(month_raw + "-01", "%Y-%m-%d").date()
+        Budget.objects.create(user=request.user, Category=category, Amount_Limit=limit, Month=month_date)
         return redirect('budget')
 
-    # Get all budgets for the user
     user_budgets = Budget.objects.filter(user=request.user)
     budget_data = []
 
     for b in user_budgets:
-        # Calculate spending for this specific category and month
         spent = expenses.objects.filter(
             user=request.user,
             Category=b.Category,
             Date__year=b.Month.year,
             Date__month=b.Month.month
         ).aggregate(Sum('Amount'))['Amount__sum'] or 0
-        
+
         percent = (spent / b.Amount_Limit) * 100 if b.Amount_Limit > 0 else 0
-        
+
         budget_data.append({
             'id': b.id,
             'category': b.Category,
@@ -115,6 +103,7 @@ def budget_view(request):
 
     return render(request, 'budget.html', {'budgets': budget_data})
 
+
 @login_required
 def income_view(request):
     if request.method == 'POST':
@@ -127,9 +116,10 @@ def income_view(request):
             Recurring_income=request.POST.get('recurring') == 'on'
         )
         return redirect('track-income')
-    
+
     incomes = income.objects.filter(user=request.user).order_by('-Date')
     return render(request, 'track-income.html', {'incomes': incomes})
+
 
 @login_required
 def expense_view(request):
@@ -143,9 +133,10 @@ def expense_view(request):
             Date=request.POST.get('date')
         )
         return redirect('track-expenses')
-        
+
     all_expenses = expenses.objects.filter(user=request.user).order_by('-Date')
     return render(request, 'track-expenses.html', {'expenses': all_expenses})
+
 
 @login_required
 def delete_income(request, pk):
@@ -153,11 +144,13 @@ def delete_income(request, pk):
     item.delete()
     return redirect('track-income')
 
+
 @login_required
 def delete_expense(request, pk):
     item = get_object_or_404(expenses, id=pk, user=request.user)
     item.delete()
     return redirect('track-expenses')
+
 
 def home(request):
     return render(request, 'home-page.html')

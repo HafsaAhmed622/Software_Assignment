@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="{% static 'home-page.css' %}">
     <link rel="stylesheet" href="{% static 'side-bar.css' %}">
     <link rel="stylesheet" href="{% static 'dashboard.css' %}">
-    <link rel="stylesheet" href="{% static 'budget.css' %}"> <!-- Import this for progress bar colors -->
 </head>
 <body>
     <div class="app">
@@ -25,9 +24,15 @@
                     {% endif %}
                 </div>
             </header>
-            </header>
 
             <div class="content-body">
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="welcome-msg">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+
                 <!-- Summary Cards -->
                 <div class="summary-grid">
                     <div class="summary-card income">
@@ -63,7 +68,8 @@
 
                 <!-- Middle Row -->
                 <div class="mid-grid">
-                    <!-- Budget Status Card -->
+
+                    <!-- Budget Status -->
                     <div class="dash-card">
                         <div class="dash-card-header">
                             <h3 class="dash-card-title">Budget Status</h3>
@@ -71,25 +77,51 @@
                         </div>
                         <div class="budget-status-list">
                             {% for b in budget_summary %}
-                            <div class="budget-status-row" style="margin-bottom: 20px;">
-                                <div class="bsr-top" style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                    <span class="bsr-name" style="font-weight: 600; color: #fff;">{{ b.category }}</span>
-                                    <span class="bsr-amounts" style="font-size: 13px; color: #94a3b8;">
-                                        EGP {{ b.spent }} / <strong>EGP {{ b.limit }}</strong>
-                                    </span>
+                            <div class="budget-status-row">
+                                <div class="bsr-top">
+                                    <span class="bsr-name">{{ b.category }}</span>
+                                    <span class="bsr-amounts">EGP {{ b.spent }} / <strong>EGP {{ b.limit }}</strong></span>
                                 </div>
-                                <div class="progress-container" style="background: #0f111a; height: 8px; border-radius: 4px; overflow: hidden;">
-                                    <div class="progress-fill {{ b.class }}" style="--width: {{ b.percent }}%; height: 100%; transition: width 0.5s;"></div>
+                                <div class="progress-container">
+                                    <div class="progress-fill {{ b.class }}" style="--width: {{ b.percent }}%;"></div>
                                 </div>
-                                <span class="bsr-remaining" style="font-size: 12px; color: #94a3b8;">
-                                    {% if b.remaining < 0 %} Over by EGP {{ b.remaining|stringformat:"d"|slice:"1:" }} {% else %} EGP {{ b.remaining }} left {% endif %}
+                                <span class="bsr-remaining">
+                                    {% if b.remaining < 0 %}Over by EGP {{ b.remaining|stringformat:"d"|slice:"1:" }}
+                                    {% else %}EGP {{ b.remaining }} left{% endif %}
                                 </span>
                             </div>
                             {% empty %}
-                            <p style="color: #4b5563; text-align: center;">No budgets for {{ month_name }}</p>
+                            <p style="color: #4b5563; text-align: center;">No budgets set</p>
                             {% endfor %}
                         </div>
                     </div>
+
+                    <!-- Recent Transactions -->
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3 class="dash-card-title">Recent Transactions</h3>
+                            <a href="{% url 'track-expenses' %}" class="dash-card-link">View all →</a>
+                        </div>
+                        <div class="recent-list">
+                            {% for t in recent_transactions %}
+                            <div class="recent-row">
+                                <div class="recent-icon {% if t.type == 'income' %}icon-income{% else %}icon-expense{% endif %}">
+                                    {% if t.type == 'income' %}💵{% else %}💸{% endif %}
+                                </div>
+                                <div class="recent-info">
+                                    <span class="recent-name">{{ t.label }}</span>
+                                    <span class="recent-date">{{ t.Date }}</span>
+                                </div>
+                                <span class="recent-amount {% if t.type == 'income' %}amount-in{% else %}amount-out{% endif %}">
+                                    {% if t.type == 'income' %}+{% else %}-{% endif %}EGP {{ t.Amount }}
+                                </span>
+                            </div>
+                            {% empty %}
+                            <p style="color: #4b5563; text-align: center; padding: 2rem;">No transactions yet</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </main>
