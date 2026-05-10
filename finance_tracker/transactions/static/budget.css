@@ -201,3 +201,32 @@ input[type="month"]::-webkit-calendar-picker-indicator:hover {
     color: #ffffff;
     margin-bottom: 1rem;
 }
+
+
+
+.monitor-card form {
+    margin: 0;
+    padding: 0;
+}
+.monitor-card .btn-delete {
+    all: unset;
+    display: block;
+    box-sizing: border-box;
+    background-color: transparent;
+    color: #ef4444;
+    border: 1px solid #ef4444;
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 12px;
+    width: 100%;
+    text-align: center;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.monitor-card .btn-delete:hover {
+    background-color: #ef4444;
+    color: #ffffff;
+}

@@ -103,6 +103,13 @@ def budget_view(request):
 
     return render(request, 'budget.html', {'budgets': budget_data})
 
+@login_required
+def delete_budget(request, pk):
+    budget = get_object_or_404(Budget, id=pk, user=request.user)
+    if request.method == 'POST':
+        budget.delete()
+    return redirect('budget')
+
 
 @login_required
 def income_view(request):
