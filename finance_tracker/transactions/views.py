@@ -17,7 +17,7 @@ def dashboard_view(request):
         user=request.user,
         Month__year=today.year,
         Month__month=today.month
-    )
+    )[:5]
 
     budget_summary = []
     near_limit_count = 0
