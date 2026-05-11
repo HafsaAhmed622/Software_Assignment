@@ -75,6 +75,10 @@
                             </p>
                             <span class="percent-label">{{ b.percent|floatformat:0 }}%</span>
                         </div>
+                        <form method="POST" action="{% url 'delete-budget' b.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
                     </div>
                     {% empty %}
                     <div class="empty-state">

@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -200,3 +200,9 @@ def budget_view(request):
         })
 
     return render(request, 'budget.html', {'budgets': budget_data})
+@login_required
+def delete_budget(request, pk):
+    budget = get_object_or_404(Budget, id=pk, user=request.user)
+    if request.method == 'POST':
+        budget.delete()
+    return redirect('budget')
