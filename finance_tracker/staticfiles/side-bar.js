@@ -11,7 +11,6 @@ function loadSidebar() {
         </a>
 
         <div class="nav-section-label">Main</div>
-
         <a class="nav-item" href="/dashboard/">📊 Dashboard</a>
         <a class="nav-item" href="/income/">💵 Income</a>
         <a class="nav-item" href="/expenses/">🧾 Expenses</a>
@@ -23,18 +22,44 @@ function loadSidebar() {
 
         <div class="sidebar-footer">
             <a class="nav-item" href="/users/user-profile/">👤 Profile</a>
-            <a class="nav-item logout" href="/login/" id="logout-btn">🚪 Logout</a>
+            
+            <form id="logout-form-sidebar" action="/users/logout/" method="POST" style="display: none;">
+                <input type="hidden" name="csrfmiddlewaretoken" value="${getCookie('csrftoken')}">
+            </form>
+            
+            <a class="nav-item logout" href="javascript:void(0)" onclick="handleLogoutSidebar(event)">
+                🚪 Logout
+            </a>
         </div>
     `;
 
     sidebar.innerHTML = html;
 
-    document.querySelectorAll(".nav-item").forEach(item => {
-        const linkPath = item.getAttribute("href");
-        if (currentPath === linkPath) {
-            item.classList.add("active");
+    // ... كود الـ active class زي ما هو ...
+}
+
+// الوظائف دي خليها بره الـ loadSidebar عشان تكون Global
+function handleLogoutSidebar(e) {
+    e.preventDefault();
+    const form = document.getElementById('logout-form-sidebar');
+    if (form) {
+        form.submit();
+    }
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
         }
-    });
+    }
+    return cookieValue;
 }
 
 document.addEventListener("DOMContentLoaded", loadSidebar);
