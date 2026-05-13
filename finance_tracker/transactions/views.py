@@ -17,7 +17,7 @@ def dashboard_view(request):
         user=request.user,
         Month__year=today.year,
         Month__month=today.month
-    )
+    )[:5]
 
     budget_summary = []
     near_limit_count = 0
@@ -102,6 +102,13 @@ def budget_view(request):
         })
 
     return render(request, 'budget.html', {'budgets': budget_data})
+
+@login_required
+def delete_budget(request, pk):
+    budget = get_object_or_404(Budget, id=pk, user=request.user)
+    if request.method == 'POST':
+        budget.delete()
+    return redirect('budget')
 
 
 @login_required

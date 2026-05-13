@@ -63,7 +63,7 @@
                         </div>
                         <div class="cat-month">{{ b.month }}</div>
                         <div class="progress-container">
-                            <div class="progress-fill {{ b.class }}" style="--width: {{ b.percent }}%;"></div>
+                            <div class="progress-fill {{ b.class }}" style="width: {{ b.percent }}%;"></div>
                         </div>
                         <div class="progress-footer">
                             <p class="status-text">
@@ -75,6 +75,10 @@
                             </p>
                             <span class="percent-label">{{ b.percent|floatformat:0 }}%</span>
                         </div>
+                        <form method="POST" action="{% url 'delete-budget' b.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
                     </div>
                     {% empty %}
                     <div class="empty-state">
